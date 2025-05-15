@@ -55,7 +55,7 @@ export default function ProductsPage({
               <div className="space-y-2">
                 <div className="flex items-center">
                   <Link
-                    href={brandId ? `/products?brand=${brandId}` : "/products"}
+                    href="/categories"
                     className={`text-sm hover:text-[#febd00] transition-colors ${
                       !categoryId ? "font-semibold text-[#febd00]" : ""
                     }`}
@@ -89,11 +89,7 @@ export default function ProductsPage({
               <div className="space-y-2">
                 <div className="flex items-center">
                   <Link
-                    href={
-                      categoryId
-                        ? `/products?category=${categoryId}`
-                        : "/products"
-                    }
+                    href="/brands"
                     className={`text-sm hover:text-[#febd00] transition-colors ${
                       !brandId ? "font-semibold text-[#febd00]" : ""
                     }`}

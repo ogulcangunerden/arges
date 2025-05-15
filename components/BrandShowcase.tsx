@@ -5,7 +5,7 @@ import { brands } from "@/lib/data";
 export function BrandShowcase() {
   return (
     <section className="py-16 bg-zinc-50">
-      <div>
+      <div className="container mx-auto px-4">
         <div className="flex flex-col items-center text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight mb-4">
             Temsil Ettiğimiz Markalar
@@ -21,19 +21,32 @@ export function BrandShowcase() {
             <Link
               key={brand.id}
               href={`/products?brand=${brand.id}`}
-              className="group flex items-center justify-center p-4 bg-white rounded-lg border border-border hover:shadow-md transition-all"
+              className="group flex flex-col items-center justify-center p-4 bg-white rounded-lg border border-border hover:shadow-md transition-all"
             >
-              <div className="h-16 relative flex items-center justify-center">
+              <div className="h-24 w-full relative flex items-center justify-center mb-3 bg-gray-100 rounded-md overflow-hidden">
                 <Image
-                  src={`/brands/${brand.id}.png`}
+                  src={brand.image}
                   alt={brand.name}
                   width={120}
-                  height={60}
+                  height={80}
                   className="object-contain transition-opacity group-hover:opacity-80"
+                  unoptimized={true}
                 />
               </div>
+              <span className="text-sm font-medium text-center">
+                {brand.name}
+              </span>
             </Link>
           ))}
+        </div>
+
+        <div className="mt-8 text-center">
+          <Link
+            href="/brands"
+            className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#febd00] hover:bg-[#e0a800] transition-colors"
+          >
+            Tüm Markalarımızı Görüntüle
+          </Link>
         </div>
       </div>
     </section>

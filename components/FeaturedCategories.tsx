@@ -72,10 +72,10 @@ export function FeaturedCategories() {
 
         <div className="mt-8 text-center">
           <Link
-            href="/products"
+            href="/categories"
             className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#febd00] hover:bg-[#e0a800] transition-colors"
           >
-            Tüm Ürünlerimizi Görüntüle
+            Tüm Kategorilerimizi Görüntüle
           </Link>
         </div>
       </div>

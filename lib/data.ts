@@ -22,6 +22,7 @@ export type Category = {
 export type Brand = {
   id: string;
   name: string;
+  image: string;
 };
 
 export const categories: Category[] = [
@@ -72,42 +73,57 @@ export const brands: Brand[] = [
   {
     id: "caterpillar",
     name: "Caterpillar",
+    image: "/brands/caterpillar.png",
   },
   {
     id: "komatsu",
     name: "Komatsu",
+    image: "/brands/komatsu.png",
   },
   {
     id: "hitachi",
     name: "Hitachi",
+    image: "/brands/hitachi.png",
   },
   {
     id: "volvo",
     name: "Volvo",
+    image: "/brands/volvo.png",
   },
   {
     id: "isuzu-motor",
     name: "Isuzu Motor",
+    image: "/brands/isuzu-motor.png",
   },
   {
     id: "cummins-motor",
     name: "Cummins Motor",
+    image: "/brands/cummins-motor.png",
   },
   {
     id: "perkins-motor",
     name: "Perkins Motor",
+    image: "/brands/perkins-motor.png",
   },
   {
     id: "kobelco",
     name: "Kobelco",
+    image: "/brands/kobelco.png",
   },
   {
     id: "yanmar",
     name: "Yanmar",
+    image: "/brands/yanmar.png",
   },
   {
     id: "new-holland",
     name: "New Holland",
+    image: "/brands/new-holland.png",
+  },
+  {
+    id: "diger",
+    name: "Diğer",
+    image: "/brands/other.svg",
   },
 ];
 
@@ -375,6 +391,27 @@ export const products: Product[] = [
       { name: "Kategori", value: "Defransiyel" },
       { name: "Stok Durum", value: "Var" },
       { name: "İncelenme", value: "635" },
+    ],
+  },
+  {
+    id: "p20",
+    title: "Universal Yedek Parça",
+    slug: "universal-yedek-parca",
+    category: "digerleri",
+    brand: "diger",
+    imageUrl: "/products/universal-part.jpg",
+    description:
+      "Çeşitli marka ve model iş makineleri için uyumlu universal yedek parça çözümleri sunuyoruz.",
+    features: [
+      "Güvenilir kalite",
+      "Ekonomik çözüm",
+      "Kolay montaj",
+      "Geniş uyumluluk",
+    ],
+    specifications: [
+      { name: "Marka", value: "Universal" },
+      { name: "Ürün Kodu", value: "UNI-5500" },
+      { name: "Uyumluluk", value: "Multi-marka" },
     ],
   },
 ];

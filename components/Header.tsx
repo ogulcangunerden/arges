@@ -15,7 +15,7 @@ const navItems = [
   { name: "Ana Sayfa", href: "/" },
   {
     name: "Kategoriler",
-    href: "/products",
+    href: "/categories",
     hasDropdown: true,
     items: categories.map((category) => ({
       name: category.name,
@@ -24,7 +24,7 @@ const navItems = [
   },
   {
     name: "Markalar",
-    href: "/products",
+    href: "/brands",
     hasDropdown: true,
     items: brands.map((brand) => ({
       name: brand.name,
@@ -121,6 +121,12 @@ export function Header() {
               <DropdownMenuItem className="font-semibold text-[#febd00]">
                 Kategoriler
               </DropdownMenuItem>
+              <DropdownMenuItem
+                asChild
+                className="pl-6 hover:bg-zinc-100 hover:text-[#febd00] rounded"
+              >
+                <Link href="/categories">Tüm Kategoriler</Link>
+              </DropdownMenuItem>
               {categories.map((category) => (
                 <DropdownMenuItem
                   key={category.id}
@@ -136,6 +142,12 @@ export function Header() {
               <DropdownMenuSeparator className="my-1" />
               <DropdownMenuItem className="font-semibold text-[#febd00]">
                 Markalar
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                asChild
+                className="pl-6 hover:bg-zinc-100 hover:text-[#febd00] rounded"
+              >
+                <Link href="/brands">Tüm Markalar</Link>
               </DropdownMenuItem>
               {brands.map((brand) => (
                 <DropdownMenuItem

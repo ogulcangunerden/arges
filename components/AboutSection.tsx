@@ -5,16 +5,19 @@ import { Button } from "@/components/ui/button";
 export function AboutSection() {
   return (
     <section className="py-16 md:py-24 bg-background">
-      <div>
+      <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <div className="aspect-square relative rounded-2xl overflow-hidden">
-              <Image
-                src="/about-image.jpg"
-                alt="Arges Makine İş Makineleri Yedek Parça"
-                fill
-                className="object-cover"
-              />
+          <div className="relative flex justify-center">
+            <div className="relative w-full max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg">
+              <div className="aspect-square relative">
+                <Image
+                  src="/images/jcb-makine.png"
+                  alt="Arges Makine İş Makineleri Yedek Parça"
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
             </div>
           </div>
 
