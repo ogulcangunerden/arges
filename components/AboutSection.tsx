@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export function AboutSection() {
   return (
     <section className="py-16 md:py-24 bg-background">
-      <div className="container px-4 md:px-6">
+      <div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="relative">
             <div className="aspect-square relative rounded-2xl overflow-hidden">

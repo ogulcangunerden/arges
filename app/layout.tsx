@@ -21,7 +21,11 @@ export default function RootLayout({
     <html lang="tr">
       <body className={inter.className}>
         <Header />
-        <main className="min-h-screen">{children}</main>
+        <main className="min-h-screen">
+          <div className="max-w-screen-2xl mx-auto px-4 md:px-6">
+            {children}
+          </div>
+        </main>
         <Footer />
       </body>
     </html>

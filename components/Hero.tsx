@@ -16,7 +16,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="container relative px-4 md:px-6 py-16 md:py-24 lg:py-32">
+      <div className="py-16 md:py-24 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">

@@ -33,7 +33,7 @@ const featuredCategories = [
 export function FeaturedCategories() {
   return (
     <section className="py-16 bg-background">
-      <div className="container px-4 md:px-6">
+      <div>
         <div className="flex flex-col items-center text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight mb-4">
             Ürün Kategorilerimiz

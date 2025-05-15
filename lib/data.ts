@@ -283,6 +283,72 @@ export const products: Product[] = [
       { name: "Malzeme", value: "Sertleştirilmiş Çelik" },
     ],
   },
+  {
+    id: "p101",
+    title: "Komatsu Ekskavatör Kepçe Dişleri",
+    slug: "komatsu-ekskavatör-kepce-disleri",
+    category: "tirnak",
+    brand: "komatsu",
+    imageUrl: "/products/excavator-parts.jpg",
+    description:
+      "Komatsu ekskavatörler için özel tasarlanmış yüksek dayanıklılığa sahip kepçe dişleri. Zorlu kazı işlemlerinde uzun ömürlü performans sunar.",
+    features: [
+      "Aşınmaya karşı yüksek dayanıklılık",
+      "Kolay değiştirilebilme özelliği",
+      "Ağır hizmet tipi malzeme yapısı",
+      "Optimum kazı performansı",
+    ],
+    specifications: [
+      { name: "Marka", value: "Komatsu" },
+      { name: "Uyumlu Model", value: "PC300-8, PC350, PC400" },
+      { name: "Malzeme", value: "Yüksek karbonlu çelik" },
+      { name: "Ağırlık", value: "18 kg" },
+    ],
+  },
+  {
+    id: "p102",
+    title: "Volvo Hidrolik Kontrol Valfi",
+    slug: "volvo-hidrolik-kontrol-valfi",
+    category: "hidrolik",
+    brand: "volvo",
+    imageUrl: "/products/hydraulic-system.jpg",
+    description:
+      "Volvo iş makineleri için tasarlanmış, hassas kontrol sağlayan hidrolik valf. Yüksek basınç altında bile güvenilir çalışma sunar.",
+    features: [
+      "Hassas operasyon kontrolü",
+      "Yüksek basınç dayanımı",
+      "Kolay montaj",
+      "Uzun ömürlü kullanım",
+    ],
+    specifications: [
+      { name: "Marka", value: "Volvo" },
+      { name: "Uyumlu Model", value: "EC210, EC240, EC300" },
+      { name: "Maksimum Basınç", value: "350 bar" },
+      { name: "Port Tipi", value: "SAE J518" },
+    ],
+  },
+  {
+    id: "p103",
+    title: "Caterpillar D7 Dozer Palet Grubu",
+    slug: "caterpillar-d7-dozer-palet-grubu",
+    category: "yuruyus-alt-takim",
+    brand: "caterpillar",
+    imageUrl: "/products/caterpillar-dozer.png",
+    description:
+      "Caterpillar D7 dozerler için komple palet grubu. Üstün çekiş gücü ve dayanıklılık sunar, her türlü arazi koşulunda optimum performans sağlar.",
+    features: [
+      "Ağır hizmet tipi çelik yapı",
+      "Geliştirilmiş aşınma direnci",
+      "Uzun servis ömrü",
+      "Her türlü zemine uygun tasarım",
+    ],
+    specifications: [
+      { name: "Marka", value: "Caterpillar" },
+      { name: "Uyumlu Model", value: "D7R, D7E, D7G" },
+      { name: "Palet Genişliği", value: "560 mm" },
+      { name: "Segment Sayısı", value: "40" },
+    ],
+  },
 ];
 
 export const getProductsByCategory = (categoryId: string) => {
