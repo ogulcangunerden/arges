@@ -10,7 +10,7 @@ export default function ContactPage() {
   return (
     <>
       <section className="bg-[#0f0f0f] py-12 md:py-16">
-        <div className="container px-4 md:px-6">
+        <div className="px-4 md:px-6">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Bizimle İletişime Geçin
@@ -24,7 +24,7 @@ export default function ContactPage() {
       </section>
 
       <section className="py-16 bg-white">
-        <div className="container px-4 md:px-6">
+        <div className="px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             <div className="bg-zinc-50 p-8 rounded-xl shadow-sm">
               <h2 className="text-2xl font-bold mb-6">İletişim Bilgileri</h2>

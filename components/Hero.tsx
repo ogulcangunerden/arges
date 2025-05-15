@@ -1,12 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export function Hero() {
   return (
     <div className="relative bg-background overflow-hidden">
       {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 -z-10 pointer-events-none">
         <Image
           src="/hero-pattern.svg"
           alt="Background pattern"
@@ -16,7 +15,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="py-16 md:py-24 lg:py-32">
+      <div className="py-16 md:py-24 lg:py-32 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
@@ -29,22 +28,15 @@ export function Hero() {
               en kaliteli yedek parçaları sunuyoruz.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/products" passHref legacyBehavior>
-                <Button
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                >
+              <Link href="/products" className="relative z-20">
+                <span className="inline-flex items-center justify-center h-10 px-6 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md text-sm font-medium transition-all cursor-pointer">
                   Ürünlerimiz
-                </Button>
+                </span>
               </Link>
-              <Link href="/contact" passHref legacyBehavior>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-primary text-primary hover:bg-primary/10"
-                >
+              <Link href="/contact" className="relative z-20">
+                <span className="inline-flex items-center justify-center h-10 px-6 py-2 border border-primary text-primary hover:bg-primary/10 rounded-md text-sm font-medium transition-all cursor-pointer">
                   İletişime Geçin
-                </Button>
+                </span>
               </Link>
             </div>
             <div className="flex flex-wrap gap-6 pt-4">
@@ -114,7 +106,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="hidden lg:flex justify-end">
+          <div className="hidden lg:flex justify-end relative z-10">
             <div className="relative w-full max-w-lg">
               <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-primary to-primary/70 opacity-30 blur-xl"></div>
               <div className="relative overflow-hidden rounded-2xl border border-border bg-card">

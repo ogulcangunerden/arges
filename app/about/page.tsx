@@ -14,7 +14,7 @@ export default function AboutPage() {
     <>
       {/* Hero Section */}
       <section className="bg-[#0f0f0f] py-16 md:py-24">
-        <div className="container px-4 md:px-6">
+        <div className="px-4 md:px-6">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">
               İş Makineleri Yedek Parça Sektöründe{" "}
@@ -33,7 +33,7 @@ export default function AboutPage() {
 
       {/* Company Story */}
       <section className="py-16 md:py-24 bg-white">
-        <div className="container px-4 md:px-6">
+        <div className="px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-2xl">
               <Image
@@ -74,7 +74,7 @@ export default function AboutPage() {
 
       {/* Mission & Vision */}
       <section className="py-16 md:py-24 bg-zinc-50">
-        <div className="container px-4 md:px-6">
+        <div className="px-4 md:px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Misyon ve Vizyonumuz</h2>
             <p className="text-zinc-600 max-w-2xl mx-auto">
@@ -146,7 +146,7 @@ export default function AboutPage() {
 
       {/* CTA */}
       <section className="bg-[#0f0f0f] py-16">
-        <div className="container px-4 md:px-6">
+        <div className="px-4 md:px-6">
           <div className="flex flex-col items-center text-center space-y-4">
             <div className="space-y-2 max-w-2xl">
               <h2 className="text-3xl font-bold text-white">

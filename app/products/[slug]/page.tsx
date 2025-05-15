@@ -35,7 +35,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
   const brand = brands.find((b) => b.id === product.brand);
 
   return (
-    <div className="container px-4 py-12 md:px-6 md:py-16">
+    <div className="px-4 py-12 md:px-6 md:py-16">
       <div className="mb-4">
         <div className="flex items-center text-sm text-zinc-500 mb-6">
           <Link
