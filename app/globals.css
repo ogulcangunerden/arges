@@ -1,26 +1,127 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.625rem;
+  --background: #ffffff; /* Beyaz arka plan */
+  --foreground: #0f0f0f; /* Siyah metin */
+  --card: #ffffff; /* Beyaz kart arka planı */
+  --card-foreground: #0f0f0f; /* Siyah kart metni */
+  --popover: #ffffff; /* Beyaz popover arka planı */
+  --popover-foreground: #0f0f0f; /* Siyah popover metni */
+  --primary: #febd00; /* Sarı - Arges marka rengi */
+  --primary-foreground: #0f0f0f; /* Sarı butonlarda siyah metin */
+  --secondary: #f4f4f5; /* Açık gri ikincil arka plan */
+  --secondary-foreground: #0f0f0f; /* İkincil alanda siyah metin */
+  --muted: #f4f4f5; /* Açık gri arka plan */
+  --muted-foreground: #71717a; /* Gri metin */
+  --accent: #febd00; /* Sarı vurgu */
+  --accent-foreground: #0f0f0f; /* Vurgu alanında siyah metin */
+  --destructive: #ef4444; /* Kırmızı hata rengi */
+  --border: #e4e4e7; /* Açık gri kenarlık */
+  --input: #e4e4e7; /* Açık gri input arka planı */
+  --ring: #febd00; /* Sarı odaklanma halkası */
+  --chart-1: #febd00; /* Sarı grafik rengi */
+  --chart-2: #0f0f0f; /* Siyah grafik rengi */
+  --chart-3: #71717a; /* Gri grafik rengi */
+  --chart-4: #94a3b8; /* Mavi-gri grafik rengi */
+  --chart-5: #e5e7eb; /* Açık gri grafik rengi */
+  --sidebar: #ffffff; /* Beyaz kenar çubuğu arka planı */
+  --sidebar-foreground: #0f0f0f; /* Siyah kenar çubuğu metni */
+  --sidebar-primary: #febd00; /* Sarı kenar çubuğu birincil rengi */
+  --sidebar-primary-foreground: #0f0f0f; /* Sarı alanda siyah metin */
+  --sidebar-accent: #f4f4f5; /* Açık gri kenar çubuğu vurgusu */
+  --sidebar-accent-foreground: #0f0f0f; /* Vurgu alanında siyah metin */
+  --sidebar-border: #e4e4e7; /* Açık gri kenar çubuğu kenarlık */
+  --sidebar-ring: #febd00; /* Sarı kenar çubuğu odaklanma halkası */
+}
+
+.dark {
+  --background: #0f0f0f; /* Koyu siyah - Arges marka rengi */
+  --foreground: #ffffff; /* Beyaz metin */
+  --card: #1a1a1a; /* Biraz daha açık siyah kartlar için */
+  --card-foreground: #ffffff; /* Beyaz kart metni */
+  --popover: #1a1a1a; /* Biraz daha açık siyah popoverlar için */
+  --popover-foreground: #ffffff; /* Beyaz popover metni */
+  --primary: #febd00; /* Sarı - Arges marka rengi */
+  --primary-foreground: #0f0f0f; /* Sarı butonlarda siyah metin */
+  --secondary: #2a2a2a; /* Koyu gri ikincil arka plan */
+  --secondary-foreground: #ffffff; /* İkincil alanda beyaz metin */
+  --muted: #2a2a2a; /* Koyu gri arka plan */
+  --muted-foreground: #a1a1aa; /* Açık gri metin */
+  --accent: #febd00; /* Sarı vurgu */
+  --accent-foreground: #0f0f0f; /* Vurgu alanında siyah metin */
+  --destructive: #ef4444; /* Kırmızı hata rengi */
+  --border: rgba(255, 255, 255, 0.1); /* Yarı saydam beyaz kenarlık */
+  --input: rgba(255, 255, 255, 0.15); /* Yarı saydam beyaz input arka planı */
+  --ring: #febd00; /* Sarı odaklanma halkası */
+  --chart-1: #febd00; /* Sarı grafik rengi */
+  --chart-2: #ffffff; /* Beyaz grafik rengi */
+  --chart-3: #a1a1aa; /* Açık gri grafik rengi */
+  --chart-4: #64748b; /* Koyu mavi-gri grafik rengi */
+  --chart-5: #2a2a2a; /* Koyu gri grafik rengi */
+  --sidebar: #1a1a1a; /* Biraz daha açık siyah kenar çubuğu arka planı */
+  --sidebar-foreground: #ffffff; /* Beyaz kenar çubuğu metni */
+  --sidebar-primary: #febd00; /* Sarı kenar çubuğu birincil rengi */
+  --sidebar-primary-foreground: #0f0f0f; /* Sarı alanda siyah metin */
+  --sidebar-accent: #2a2a2a; /* Koyu gri kenar çubuğu vurgusu */
+  --sidebar-accent-foreground: #ffffff; /* Vurgu alanında beyaz metin */
+  --sidebar-border: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Yarı saydam beyaz kenar çubuğu kenarlık */
+  --sidebar-ring: #febd00; /* Sarı kenar çubuğu odaklanma halkası */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
 }

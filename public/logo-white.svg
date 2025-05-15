@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="150" height="50" viewBox="0 0 150 50" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .text { font-family: Arial, sans-serif; font-weight: bold; }
+    .large { font-size: 24px; }
+    .small { font-size: 12px; }
+  </style>
+  <text x="10" y="30" class="text large" fill="#ffffff">ARGES</text>
+  <text x="90" y="30" class="text large" fill="#febd00">MAKINE</text>
+  <text x="10" y="42" class="text small" fill="#aaaaaa">İŞ MAKİNELERİ YEDEK PARÇA</text>
+</svg> 
