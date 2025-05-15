@@ -1,39 +1,14 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getProductBySlug, categories, brands } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const product = getProductBySlug(params.slug);
+export const metadata: Metadata = {
+  title: "Ayna Mahruti - 068274 | Arges Makine",
+  description: "068274 KOMATSU AYNA MAHRUTİ KOMATSU YEDEK PARÇA",
+};
 
-  if (!product) {
-    return {
-      title: "Ürün Bulunamadı | Arges Makine",
-    };
-  }
-
-  return {
-    title: `${product.title} | Arges Makine`,
-    description: product.description,
-  };
-}
-
-export default function ProductPage({ params }: { params: { slug: string } }) {
-  const product = getProductBySlug(params.slug);
-
-  if (!product) {
-    notFound();
-  }
-
-  const category = categories.find((cat) => cat.id === product.category);
-  const brand = brands.find((b) => b.id === product.brand);
-
+export default function AynaMahrutiPage() {
   return (
     <div className="container px-4 py-12 md:px-6 md:py-16">
       <div className="mb-4">
@@ -45,26 +20,22 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             Ürünler
           </Link>
           <span className="mx-2">/</span>
-          {category && (
-            <>
-              <Link
-                href={`/products?category=${category.id}`}
-                className="hover:text-[#febd00] transition-colors"
-              >
-                {category.name}
-              </Link>
-              <span className="mx-2">/</span>
-            </>
-          )}
-          <span className="text-zinc-800">{product.title}</span>
+          <Link
+            href={`/products?category=defransiyel`}
+            className="hover:text-[#febd00] transition-colors"
+          >
+            Defransiyel
+          </Link>
+          <span className="mx-2">/</span>
+          <span className="text-zinc-800">Ayna Mahruti - 068274</span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <div className="relative rounded-xl overflow-hidden bg-zinc-100">
             <div className="aspect-square">
               <Image
-                src={product.imageUrl}
-                alt={product.title}
+                src="/products/excavator-parts.jpg"
+                alt="Ayna Mahruti - 068274"
                 fill
                 className="object-cover"
               />
@@ -74,55 +45,34 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl font-bold tracking-tight mb-4">
-                {product.title}
+                Ayna Mahruti - 068274
               </h1>
 
               <div className="bg-[#febd00]/10 p-4 rounded-lg border border-[#febd00]/20 mb-6">
                 <p className="text-lg font-medium mb-2">Ürün Bilgileri</p>
                 <ul className="space-y-2">
-                  {brand && (
-                    <li className="flex items-center gap-2">
-                      <span className="font-medium">Marka:</span>
-                      <Link
-                        href={`/products?brand=${brand.id}`}
-                        className="text-[#febd00] hover:underline"
-                      >
-                        {brand.name}
-                      </Link>
-                    </li>
-                  )}
-                  {category && (
-                    <li className="flex items-center gap-2">
-                      <span className="font-medium">Kategori:</span>
-                      <Link
-                        href={`/products?category=${category.id}`}
-                        className="text-[#febd00] hover:underline"
-                      >
-                        {category.name}
-                      </Link>
-                    </li>
-                  )}
-                  {product.specifications.find(
-                    (spec) => spec.name === "Model" || spec.name === "Ürün Kodu"
-                  ) && (
-                    <li className="flex items-center gap-2">
-                      <span className="font-medium">
-                        {product.specifications.find(
-                          (spec) => spec.name === "Ürün Kodu"
-                        )
-                          ? "Ürün Kodu:"
-                          : "Model:"}
-                      </span>
-                      <span>
-                        {product.specifications.find(
-                          (spec) => spec.name === "Ürün Kodu"
-                        )?.value ||
-                          product.specifications.find(
-                            (spec) => spec.name === "Model"
-                          )?.value}
-                      </span>
-                    </li>
-                  )}
+                  <li className="flex items-center gap-2">
+                    <span className="font-medium">Marka:</span>
+                    <Link
+                      href={`/products?brand=komatsu`}
+                      className="text-[#febd00] hover:underline"
+                    >
+                      Komatsu
+                    </Link>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="font-medium">Kategori:</span>
+                    <Link
+                      href={`/products?category=defransiyel`}
+                      className="text-[#febd00] hover:underline"
+                    >
+                      Defransiyel
+                    </Link>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="font-medium">Ürün Kodu:</span>
+                    <span>068274</span>
+                  </li>
                   <li className="flex items-center gap-2">
                     <span className="font-medium">Stok Durumu:</span>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -135,7 +85,11 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
             <div>
               <h2 className="text-xl font-semibold mb-3">Ürün Açıklaması</h2>
-              <p className="text-zinc-600 mb-6">{product.description}</p>
+              <p className="text-zinc-600 mb-6">
+                068274 KOMATSU AYNA MAHRUTİ KOMATSU YEDEK PARÇA. Komatsu marka
+                Ayna Mahruti - 068274 kodlu yedek parça. Tüm Komatsu yedek
+                parçalarına sitemizden ulaşabilirsiniz.
+              </p>
             </div>
 
             <div className="bg-zinc-50 p-5 rounded-lg border border-zinc-200 mb-6">
@@ -180,7 +134,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                     <path d="M3 21l1.9-5.7a8.5 8.5 0 113.8 3.8z"></path>
                   </svg>
                   <Link
-                    href={`https://wa.me/+905555555555?text=Merhaba, ${product.title} ürünü hakkında detaylı bilgi almak istiyorum.`}
+                    href={`https://wa.me/+905555555555?text=Merhaba, Ayna Mahruti - 068274 ürünü hakkında detaylı bilgi almak istiyorum.`}
                   >
                     Whatsapp İle İletişim
                   </Link>

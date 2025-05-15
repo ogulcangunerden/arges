@@ -29,21 +29,23 @@ export function Hero() {
               en kaliteli yedek parçaları sunuyoruz.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                asChild
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground"
-              >
-                <Link href="/products">Ürünlerimiz</Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-primary text-primary hover:bg-primary/10"
-              >
-                <Link href="/contact">İletişime Geçin</Link>
-              </Button>
+              <Link href="/products" passHref legacyBehavior>
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                >
+                  Ürünlerimiz
+                </Button>
+              </Link>
+              <Link href="/contact" passHref legacyBehavior>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-primary text-primary hover:bg-primary/10"
+                >
+                  İletişime Geçin
+                </Button>
+              </Link>
             </div>
             <div className="flex flex-wrap gap-6 pt-4">
               <div className="flex items-center gap-2">

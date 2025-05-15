@@ -52,6 +52,11 @@ export const categories: Category[] = [
     description: "Şanzıman ve güç aktarma organları için yedek parçalar",
   },
   {
+    id: "defransiyel",
+    name: "Defransiyel",
+    description: "Defransiyel ve diferansiyel sistemi yedek parçaları",
+  },
+  {
     id: "tirnak",
     name: "Tırnak",
     description: "Kepçe tırnakları ve bağlantı elemanları",
@@ -347,6 +352,29 @@ export const products: Product[] = [
       { name: "Uyumlu Model", value: "D7R, D7E, D7G" },
       { name: "Palet Genişliği", value: "560 mm" },
       { name: "Segment Sayısı", value: "40" },
+    ],
+  },
+  {
+    id: "p104",
+    title: "Ayna Mahruti - 068274",
+    slug: "ayna-mahruti-068274",
+    category: "defransiyel",
+    brand: "komatsu",
+    imageUrl: "/products/excavator-parts.jpg",
+    description:
+      "068274 KOMATSU AYNA MAHRUTİ KOMATSU YEDEK PARÇA. Komatsu marka Ayna Mahruti - 068274 kodlu yedek parça. Tüm Komatsu yedek parçalarına aşağıdaki listeden ulaşabilirsiniz.",
+    features: [
+      "Orijinal Komatsu yedek parça",
+      "Uzun ömürlü kullanım",
+      "Yüksek performans",
+      "Dayanıklı yapı",
+    ],
+    specifications: [
+      { name: "Ürün Kodu", value: "068274" },
+      { name: "Marka", value: "Komatsu" },
+      { name: "Kategori", value: "Defransiyel" },
+      { name: "Stok Durum", value: "Var" },
+      { name: "İncelenme", value: "635" },
     ],
   },
 ];
