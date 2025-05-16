@@ -1,24 +1,57 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { categories } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Tüm Kategoriler | Arges Makine",
   description: "Arges Makine - İş makineleri yedek parça kategorileri",
 };
 
-// Category image paths mapping
-const categoryImages: Record<string, string> = {
-  "yuruyus-alt-takim": "/images/yuruyus-alt-takim.jpg",
-  "motor-mekanik": "/images/motor-mekanik.jpg",
-  hidrolik: "/images/hidrolik.jpg",
-  "kazici-delici-grubu": "/images/kazici-delici.jpg",
-  sanziman: "/images/sanziman.jpg", // Add default image path if not exists
-  defransiyel: "/images/defransiyel.jpg", // Add default image path if not exists
-  tirnak: "/images/tirnak.jpg", // Add default image path if not exists
-  digerleri: "/images/digerleri.jpg", // Add default image path if not exists
-};
+// Kategori görselleri - isteğe göre kolayca düzenlenebilir
+const categoryVisuals = [
+  {
+    id: "yuruyus-alt-takim",
+    name: "Yürüyüş ve Alt Takım",
+    image: "/categories/yuruyen.png",
+    description: "Yürüyüş ve alt takım parçaları",
+  },
+  {
+    id: "motor-mekanik",
+    name: "Motor ve Mekanik Parçalar",
+    image: "/categories/mekanik.webp",
+    description: "Motor ve mekanik parçalar",
+  },
+  {
+    id: "hidrolik",
+    name: "Hidrolik Sistem Parçaları",
+    image: "/categories/hidrolik.jpg",
+    description: "Hidrolik sistem parçaları",
+  },
+  {
+    id: "kazici-delici-grubu",
+    name: "Kazıcı ve Delici Grup",
+    image: "/categories/delici.webp",
+    description: "Kazıcı ve delici grup parçaları",
+  },
+  {
+    id: "sanziman",
+    name: "Şanzıman Parçaları",
+    image: "/categories/transmission.webp",
+    description: "Şanzıman ve aktarma organları",
+  },
+  {
+    id: "tirnak",
+    name: "Tırnak Grupları",
+    image: "/categories/tirnak.jpg",
+    description: "Kova tırnakları ve bağlantı elemanları",
+  },
+  {
+    id: "digerleri",
+    name: "Diğer Parçalar",
+    image: "/brands/other.svg",
+    description: "Diğer yedek parçalar",
+  },
+];
 
 export default function CategoriesPage() {
   return (
@@ -33,8 +66,9 @@ export default function CategoriesPage() {
         </p>
       </div>
 
+      {/* Kategori Listesi */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {categories.map((category) => (
+        {categoryVisuals.map((category) => (
           <Link
             key={category.id}
             href={`/products?category=${category.id}`}
@@ -42,9 +76,7 @@ export default function CategoriesPage() {
           >
             <div className="aspect-square relative">
               <Image
-                src={
-                  categoryImages[category.id] || "/images/default-category.jpg"
-                }
+                src={category.image}
                 alt={category.name}
                 fill
                 className="object-cover transition-transform group-hover:scale-105 duration-300"

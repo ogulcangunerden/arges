@@ -26,14 +26,15 @@ export default function BrandsPage() {
             href={`/products?brand=${brand.id}`}
             className="group relative rounded-xl overflow-hidden bg-card border border-border transition-all hover:shadow-md"
           >
-            <div className="aspect-square relative">
+            <div className="aspect-square relative bg-white flex items-center justify-center p-4">
               <Image
                 src={brand.image}
                 alt={brand.name}
                 fill
-                className="object-cover transition-transform group-hover:scale-105 duration-300"
+                className="object-contain p-4 transition-transform group-hover:scale-105 duration-300"
+                unoptimized={true}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
             </div>
             <div className="absolute bottom-0 w-full p-4 text-white">
               <h3 className="font-semibold text-lg mb-1">{brand.name}</h3>

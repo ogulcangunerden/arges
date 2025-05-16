@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { categories } from "@/lib/data";
 
 export function Footer() {
   return (
@@ -68,38 +69,16 @@ export function Footer() {
               Ürün Kategorileri
             </h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="/products?category=motor"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  Motor Parçaları
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/products?category=hidrolik"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  Hidrolik Sistemler
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/products?category=filtreler"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  Filtreler
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/products?category=yuruyus"
-                  className="text-foreground hover:text-primary transition-colors"
-                >
-                  Yürüyüş Takımları
-                </Link>
-              </li>
+              {categories.map((category) => (
+                <li key={category.id}>
+                  <Link
+                    href={`/products?category=${category.id}`}
+                    className="text-foreground hover:text-primary transition-colors"
+                  >
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

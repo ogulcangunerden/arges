@@ -6,26 +6,26 @@ const featuredCategories = [
   {
     id: "yuruyus-alt-takim",
     name: "Yürüyüş Alt Takım",
-    imageUrl: "/images/yuruyus-alt-takim.jpg",
+    imageUrl: "/categories/yuruyen.png",
     description:
       "Paletli iş makineleri için yürüyüş takımları ve alt şase parçaları",
   },
   {
     id: "motor-mekanik",
     name: "Motor Mekanik",
-    imageUrl: "/images/motor-mekanik.jpg",
+    imageUrl: "/categories/mekanik.webp",
     description: "Motor ve mekanik aksamlar için yedek parçalar",
   },
   {
     id: "hidrolik",
     name: "Hidrolik",
-    imageUrl: "/images/hidrolik.jpg",
+    imageUrl: "/categories/hidrolik.jpg",
     description: "Yüksek kaliteli hidrolik sistem komponentleri",
   },
   {
     id: "kazici-delici-grubu",
     name: "Kazıcı Delici Grubu",
-    imageUrl: "/images/kazici-delici.jpg",
+    imageUrl: "/categories/delici.webp",
     description: "Kazıcı ve delici ekipmanlar için yedek parçalar",
   },
 ];
