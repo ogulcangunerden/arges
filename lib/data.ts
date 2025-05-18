@@ -54,8 +54,8 @@ export const categories: Category[] = [
   },
   {
     id: "defransiyel",
-    name: "Defransiyel",
-    description: "Defransiyel ve diferansiyel sistemi yedek parçaları",
+    name: "Diferansiyel",
+    description: "Diferansiyel sistemi yedek parçaları",
   },
   {
     id: "tirnak",
