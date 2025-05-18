@@ -111,7 +111,7 @@ export function Hero() {
               <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-primary to-primary/70 opacity-30 blur-xl"></div>
               <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
                 <Image
-                  src="/images/machine.png"
+                  src="/images/arges1.png"
                   alt="İş makinesi yedek parçaları"
                   width={600}
                   height={600}
