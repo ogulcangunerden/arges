@@ -7,6 +7,7 @@ import {
   orderBy,
   where,
   DocumentSnapshot,
+  QueryConstraint,
 } from "firebase/firestore";
 import { db } from "@/app/firebase/config";
 import { Product } from "@/types/product";
@@ -23,6 +24,7 @@ export const convertFirestoreDocToProduct = (
     name: data?.name,
     description: data?.description,
     category: data?.category,
+    brand: data?.brand,
     price: data?.price,
     imageUrl: data?.imageUrl,
     features: data?.features || [],
@@ -62,6 +64,34 @@ export const getProductsByCategory = async (
     return querySnapshot.docs.map(convertFirestoreDocToProduct);
   } catch (error) {
     console.error("Error getting products by category:", error);
+    throw error;
+  }
+};
+
+// Get products filtered by both category and brand
+export const getFilteredProducts = async (
+  categoryName?: string,
+  brandName?: string
+): Promise<Product[]> => {
+  try {
+    const constraints: QueryConstraint[] = [];
+
+    if (categoryName) {
+      constraints.push(where("category", "==", categoryName));
+    }
+
+    if (brandName) {
+      constraints.push(where("brand", "==", brandName));
+    }
+
+    constraints.push(orderBy("createdAt", "desc"));
+
+    const q = query(collection(db, COLLECTION_NAME), ...constraints);
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(convertFirestoreDocToProduct);
+  } catch (error) {
+    console.error("Error getting filtered products:", error);
     throw error;
   }
 };

@@ -1,151 +1,72 @@
-import { Metadata } from "next";
-import { products, categories, brands } from "@/lib/data";
-import { ProductCard } from "@/components/ProductCard";
-import Link from "next/link";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Ürünlerimiz | Arges Makine",
-  description:
-    "Arges Makine - İş makineleri için yüksek kaliteli yedek parça ürünlerimiz",
-};
+import { Suspense, useState } from "react";
+import ProductsList from "@/components/ProductsList";
+import ProductFilterSidebar from "@/components/ProductFilterSidebar";
 
-export default function ProductsPage({
-  searchParams,
-}: {
-  searchParams: { category?: string; brand?: string };
-}) {
-  const categoryId = searchParams.category;
-  const brandId = searchParams.brand;
-
-  const filteredProducts = products.filter((product) => {
-    const matchesCategory = categoryId ? product.category === categoryId : true;
-    const matchesBrand = brandId ? product.brand === brandId : true;
-    return matchesCategory && matchesBrand;
-  });
-
-  const currentCategory = categoryId
-    ? categories.find((cat) => cat.id === categoryId)
-    : null;
-
-  const currentBrand = brandId ? brands.find((b) => b.id === brandId) : null;
+export default function ProductsPage() {
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+    undefined
+  );
+  const [selectedBrand, setSelectedBrand] = useState<string | undefined>(
+    undefined
+  );
 
   return (
-    <div className="container px-4 py-12 md:px-6 md:py-16">
-      <div className="mb-12">
-        <h1 className="text-3xl font-bold tracking-tight mb-4">
-          {currentCategory || currentBrand
-            ? `${currentBrand?.name || ""} ${
-                currentBrand && currentCategory ? " - " : ""
-              } ${currentCategory?.name || ""}`
-            : "Tüm Ürünlerimiz"}
-        </h1>
-        <p className="text-zinc-600 max-w-3xl">
-          {currentCategory?.description ||
-            (currentBrand
-              ? `${currentBrand.name} marka ürünlerimizi keşfedin.`
-              : "İş makineleriniz için yüksek kaliteli yedek parça ürünlerimizi keşfedin. Aradığınız parçayı kategorilere ve markalara göre filtreleyebilirsiniz.")}
+    <main className="container mx-auto px-4 py-12">
+      <div className="mb-10">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4">Ürünlerimiz</h1>
+        <p className="text-muted-foreground text-lg">
+          Geniş ürün yelpazemizi keşfedin ve ihtiyacınıza uygun çözümleri bulun.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="md:col-span-1">
-          <div className="sticky top-24 space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-3">Kategoriler</h3>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <Link
-                    href="/categories"
-                    className={`text-sm hover:text-[#febd00] transition-colors ${
-                      !categoryId ? "font-semibold text-[#febd00]" : ""
-                    }`}
-                  >
-                    Tüm Kategoriler
-                  </Link>
-                </div>
-                {categories.map((category) => (
-                  <div key={category.id} className="flex items-center">
-                    <Link
-                      href={
-                        brandId
-                          ? `/products?category=${category.id}&brand=${brandId}`
-                          : `/products?category=${category.id}`
-                      }
-                      className={`text-sm hover:text-[#febd00] transition-colors ${
-                        categoryId === category.id
-                          ? "font-semibold text-[#febd00]"
-                          : ""
-                      }`}
-                    >
-                      {category.name}
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Filter Sidebar */}
+        <aside className="w-full md:w-64 flex-shrink-0">
+          <ProductFilterSidebar
+            selectedCategory={selectedCategory}
+            selectedBrand={selectedBrand}
+            onCategoryChange={setSelectedCategory}
+            onBrandChange={setSelectedBrand}
+          />
+        </aside>
 
-            <div>
-              <h3 className="text-lg font-semibold mb-3">Markalar</h3>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <Link
-                    href="/brands"
-                    className={`text-sm hover:text-[#febd00] transition-colors ${
-                      !brandId ? "font-semibold text-[#febd00]" : ""
-                    }`}
-                  >
-                    Tüm Markalar
-                  </Link>
-                </div>
-                {brands.map((brand) => (
-                  <div key={brand.id} className="flex items-center">
-                    <Link
-                      href={
-                        categoryId
-                          ? `/products?category=${categoryId}&brand=${brand.id}`
-                          : `/products?brand=${brand.id}`
-                      }
-                      className={`text-sm hover:text-[#febd00] transition-colors ${
-                        brandId === brand.id
-                          ? "font-semibold text-[#febd00]"
-                          : ""
-                      }`}
-                    >
-                      {brand.name}
-                    </Link>
-                  </div>
-                ))}
-              </div>
+        {/* Products List */}
+        <div className="flex-1">
+          <Suspense fallback={<ProductsLoadingSkeleton />}>
+            <ProductsList
+              selectedCategory={selectedCategory}
+              selectedBrand={selectedBrand}
+            />
+          </Suspense>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function ProductsLoadingSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div
+          key={index}
+          className="bg-card rounded-lg shadow-md overflow-hidden animate-pulse"
+        >
+          <div className="h-48 bg-muted"></div>
+          <div className="p-6">
+            <div className="h-6 bg-muted rounded w-3/4 mb-2"></div>
+            <div className="h-4 bg-muted rounded w-1/4 mb-4"></div>
+            <div className="h-4 bg-muted rounded w-full mb-2"></div>
+            <div className="h-4 bg-muted rounded w-5/6 mb-4"></div>
+            <div className="flex justify-between mt-4">
+              <div className="h-6 bg-muted rounded w-1/4"></div>
+              <div className="h-8 bg-muted rounded w-1/4"></div>
             </div>
           </div>
         </div>
-
-        <div className="md:col-span-3">
-          {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  title={product.title}
-                  category={
-                    categories.find((cat) => cat.id === product.category)
-                      ?.name || ""
-                  }
-                  imageUrl={product.imageUrl}
-                  slug={product.slug}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <h3 className="text-lg font-medium mb-2">Ürün bulunamadı</h3>
-              <p className="text-zinc-600">
-                Seçtiğiniz kriterlere uygun ürün bulunmamaktadır.
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
+      ))}
     </div>
   );
 }

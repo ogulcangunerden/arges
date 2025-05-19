@@ -2,19 +2,38 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { getProducts } from "@/lib/firebase/products";
+import { getProducts, getFilteredProducts } from "@/lib/firebase/products";
 import { Product } from "@/types/product";
 
-export default function ProductsList() {
+interface ProductsListProps {
+  selectedCategory?: string;
+  selectedBrand?: string;
+}
+
+export default function ProductsList({
+  selectedCategory,
+  selectedBrand,
+}: ProductsListProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
-        const data = await getProducts();
-        setProducts(data);
+        // Use the filtered function if either filter is applied
+        if (selectedCategory || selectedBrand) {
+          const data = await getFilteredProducts(
+            selectedCategory,
+            selectedBrand
+          );
+          setProducts(data);
+        } else {
+          // Otherwise, fetch all products
+          const data = await getProducts();
+          setProducts(data);
+        }
       } catch (err) {
         console.error("Error fetching products:", err);
         setError("Ürünler yüklenirken bir hata oluştu.");
@@ -24,7 +43,7 @@ export default function ProductsList() {
     };
 
     fetchProducts();
-  }, []);
+  }, [selectedCategory, selectedBrand]);
 
   if (loading) {
     return (
@@ -78,8 +97,16 @@ export default function ProductsList() {
             />
           </svg>
         </div>
-        <h3 className="text-xl font-semibold mb-2">Henüz ürün yok</h3>
-        <p className="text-gray-500">Yakında ürünlerimiz eklenecektir.</p>
+        <h3 className="text-xl font-semibold mb-2">
+          {selectedCategory || selectedBrand
+            ? "Seçilen filtrelerle ürün bulunamadı"
+            : "Henüz ürün yok"}
+        </h3>
+        <p className="text-gray-500">
+          {selectedCategory || selectedBrand
+            ? "Lütfen farklı filtreler deneyin."
+            : "Yakında ürünlerimiz eklenecektir."}
+        </p>
       </div>
     );
   }
@@ -125,17 +152,40 @@ function ProductCard({ product }: { product: Product }) {
       )}
 
       <div className="p-6">
-        <div className="flex justify-between items-start mb-2">
+        <div className="flex justify-between items-start mb-3">
           <h3 className="text-xl font-semibold truncate">{product.name}</h3>
-          <span className="px-2 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full">
+        </div>
+
+        <div className="mb-3">
+          <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full mb-2">
             {product.category}
           </span>
+          {product.brand && (
+            <div className="text-sm text-gray-500 mt-1">
+              <span className="font-medium">Marka:</span> {product.brand}
+            </div>
+          )}
         </div>
+
         <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
-        <div className="mt-auto flex items-center justify-between">
-          <span className="text-lg font-bold text-blue-700">
-            {product.price.toLocaleString("tr-TR")} ₺
-          </span>
+
+        {product.features && product.features.length > 0 && (
+          <div className="mb-4">
+            <h4 className="text-sm font-semibold mb-2">Özellikler:</h4>
+            <ul className="text-sm text-gray-600 list-disc pl-5">
+              {product.features.slice(0, 2).map((feature, index) => (
+                <li key={index} className="line-clamp-1">
+                  {feature}
+                </li>
+              ))}
+              {product.features.length > 2 && (
+                <li className="text-blue-600">+ daha fazla</li>
+              )}
+            </ul>
+          </div>
+        )}
+
+        <div className="mt-auto flex justify-end">
           <Link
             href={`/products/${product.id}`}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300"
