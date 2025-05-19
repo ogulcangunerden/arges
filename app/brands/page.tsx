@@ -1,14 +1,27 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { brands } from "@/lib/data";
+import { getBrands } from "@/lib/firebase/brands";
+import { Brand } from "@/types/brand";
 
 export const metadata: Metadata = {
   title: "Tüm Markalar | Arges Makine",
   description: "Arges Makine - İş makineleri yedek parça markaları",
 };
 
-export default function BrandsPage() {
+async function fetchBrands(): Promise<Brand[]> {
+  try {
+    const brands = await getBrands();
+    return brands;
+  } catch (error) {
+    console.error("Error fetching brands:", error);
+    return [];
+  }
+}
+
+export default async function BrandsPage() {
+  const brands = await fetchBrands();
+
   return (
     <div className="container px-4 py-12 md:px-6 md:py-16">
       <div className="mb-12">

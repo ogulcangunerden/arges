@@ -9,33 +9,67 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { categories, brands } from "@/lib/data";
+import { getCategories } from "@/lib/firebase/categories";
+import { getBrands } from "@/lib/firebase/brands";
+import { Category } from "@/types/category";
+import { Brand } from "@/types/brand";
 
-const navItems = [
-  { name: "Ana Sayfa", href: "/" },
-  {
-    name: "Kategoriler",
-    href: "/categories",
-    hasDropdown: true,
-    items: categories.map((category) => ({
-      name: category.name,
-      href: `/products?category=${category.id}`,
-    })),
-  },
-  {
-    name: "Markalar",
-    href: "/brands",
-    hasDropdown: true,
-    items: brands.map((brand) => ({
-      name: brand.name,
-      href: `/products?brand=${brand.id}`,
-    })),
-  },
-  { name: "Hakkımızda", href: "/about" },
-  { name: "İletişim", href: "/contact" },
-];
+async function buildNavItems() {
+  try {
+    const [categoriesData, brandsData] = await Promise.all([
+      getCategories(),
+      getBrands(),
+    ]);
 
-export function Header() {
+    return [
+      { name: "Ana Sayfa", href: "/" },
+      {
+        name: "Kategoriler",
+        href: "/categories",
+        hasDropdown: true,
+        items: categoriesData.map((category) => ({
+          name: category.name,
+          href: `/products?category=${category.id}`,
+        })),
+      },
+      {
+        name: "Markalar",
+        href: "/brands",
+        hasDropdown: true,
+        items: brandsData.map((brand) => ({
+          name: brand.name,
+          href: `/products?brand=${brand.id}`,
+        })),
+      },
+      { name: "Hakkımızda", href: "/about" },
+      { name: "İletişim", href: "/contact" },
+    ];
+  } catch (error) {
+    console.error("Error building nav items:", error);
+    // Fallback to basic nav without dropdowns
+    return [
+      { name: "Ana Sayfa", href: "/" },
+      { name: "Kategoriler", href: "/categories" },
+      { name: "Markalar", href: "/brands" },
+      { name: "Hakkımızda", href: "/about" },
+      { name: "İletişim", href: "/contact" },
+    ];
+  }
+}
+
+export async function Header() {
+  const navItems = await buildNavItems();
+
+  // Get categories and brands separately for mobile menu
+  let categories: Category[] = [];
+  let brands: Brand[] = [];
+
+  try {
+    [categories, brands] = await Promise.all([getCategories(), getBrands()]);
+  } catch (error) {
+    console.error("Error fetching data for mobile menu:", error);
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-20 items-center justify-between px-4 md:px-6">

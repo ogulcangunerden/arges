@@ -1,9 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { categories } from "@/lib/data";
+import { getCategories } from "@/lib/firebase/categories";
+import { Category } from "@/types/category";
 
-export function Footer() {
+export async function Footer() {
+  // Fetch categories data from Firebase
+  let categories: Category[] = [];
+
+  try {
+    categories = await getCategories();
+  } catch (error) {
+    console.error("Error fetching categories for footer:", error);
+  }
+
   return (
     <footer className="bg-card border-t border-border text-foreground py-12">
       <div className=" px-4 md:px-6">

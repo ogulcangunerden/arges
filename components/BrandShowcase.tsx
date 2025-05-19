@@ -1,8 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
-import { brands } from "@/lib/data";
+import { getBrands } from "@/lib/firebase/brands";
+import { Brand } from "@/types/brand";
 
-export function BrandShowcase() {
+async function fetchBrands(): Promise<Brand[]> {
+  try {
+    const brands = await getBrands();
+    return brands;
+  } catch (error) {
+    console.error("Error fetching brands:", error);
+    return [];
+  }
+}
+
+export async function BrandShowcase() {
+  const brands = await fetchBrands();
+
   return (
     <section className="py-16 bg-zinc-50">
       <div className="container mx-auto px-4">
