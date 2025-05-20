@@ -2,22 +2,31 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { getCategories } from "@/lib/firebase/categories";
+import { getBrands } from "@/lib/firebase/brands";
 import { Category } from "@/types/category";
+import { Brand } from "@/types/brand";
 
 export async function Footer() {
-  // Fetch categories data from Firebase
+  // Fetch categories and brands data from Firebase
   let categories: Category[] = [];
+  let brands: Brand[] = [];
 
   try {
-    categories = await getCategories();
+    const [categoriesData, brandsData] = await Promise.all([
+      getCategories(),
+      getBrands(),
+    ]);
+
+    categories = categoriesData;
+    brands = brandsData;
   } catch (error) {
-    console.error("Error fetching categories for footer:", error);
+    console.error("Error fetching data for footer:", error);
   }
 
   return (
     <footer className="bg-card border-t border-border text-foreground py-12">
       <div className=" px-4 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <Image
@@ -79,7 +88,7 @@ export async function Footer() {
               Ürün Kategorileri
             </h3>
             <ul className="space-y-2 text-sm">
-              {categories.map((category) => (
+              {categories.slice(0, 6).map((category) => (
                 <li key={category.id}>
                   <Link
                     href={`/products?category=${category.id}`}
@@ -89,6 +98,44 @@ export async function Footer() {
                   </Link>
                 </li>
               ))}
+              {categories.length > 6 && (
+                <li>
+                  <Link
+                    href="/products"
+                    className="text-primary font-medium hover:underline"
+                  >
+                    Tümünü Gör
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-primary">
+              Markalar
+            </h3>
+            <ul className="space-y-2 text-sm">
+              {brands.slice(0, 6).map((brand) => (
+                <li key={brand.id}>
+                  <Link
+                    href={`/products?brand=${brand.id}`}
+                    className="text-foreground hover:text-primary transition-colors"
+                  >
+                    {brand.name}
+                  </Link>
+                </li>
+              ))}
+              {brands.length > 6 && (
+                <li>
+                  <Link
+                    href="/brands"
+                    className="text-primary font-medium hover:underline"
+                  >
+                    Tümünü Gör
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -100,25 +147,25 @@ export async function Footer() {
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 mr-2 text-primary" />
                 <span className="text-foreground">
-                  İstanbul Yolu 35. km No:244, Ankara, Türkiye
+                  İkitelli OSB, Sefaköy San. Sit. 15. Blok No:26
                 </span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 mr-2 text-primary" />
                 <Link
-                  href="tel:+903122222222"
+                  href="tel:+902125490586"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  +90 312 222 22 22
+                  +90 212 549 05 86
                 </Link>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 mr-2 text-primary" />
                 <Link
-                  href="mailto:info@argesmakine.com"
+                  href="mailto:muzafferarslan05@hotmail.com"
                   className="text-foreground hover:text-primary transition-colors"
                 >
-                  info@argesmakine.com
+                  muzafferarslan05@hotmail.com
                 </Link>
               </li>
             </ul>

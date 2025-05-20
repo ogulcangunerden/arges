@@ -35,10 +35,11 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Adres</h3>
-                    <p className="text-zinc-600">
-                      İkitelli Organize San. Bölgesi Sefaköy San. Sit. 3. Blok
-                      No:15 <br />
-                      Başakşehir, İstanbul
+                    <p className="text-zinc-600 flex flex-col">
+                      <span>İkitelli Organize Sanayi Bölgesi Mahallesi</span>
+                      <span>Sefaköy Sanayi Sitesi</span>
+                      <span>15. Blok No:26</span>
+                      <strong>Başakşehir, İstanbul</strong>
                     </p>
                   </div>
                 </div>
@@ -54,7 +55,7 @@ export default function ContactPage() {
                         href="tel:+903122222222"
                         className="hover:text-[#febd00]"
                       >
-                        +90 312 222 22 22
+                        +90 212 549 05 86
                       </a>
                     </p>
                   </div>
@@ -68,10 +69,10 @@ export default function ContactPage() {
                     <h3 className="font-semibold mb-1">E-posta</h3>
                     <p className="text-zinc-600">
                       <a
-                        href="mailto:info@argesmakine.com"
+                        href="mailto:muzafferarslan05@hotmail.com"
                         className="hover:text-[#febd00]"
                       >
-                        info@argesmakine.com
+                        muzafferarslan05@hotmail.com
                       </a>
                     </p>
                   </div>
@@ -85,7 +86,7 @@ export default function ContactPage() {
                     <h3 className="font-semibold mb-1">Çalışma Saatleri</h3>
                     <p className="text-zinc-600">
                       Pazartesi - Cuma: 08:30 - 18:00 <br />
-                      Cumartesi: 09:00 - 13:00
+                      Cumartesi: 8:30 - 15:00
                     </p>
                   </div>
                 </div>
@@ -94,9 +95,10 @@ export default function ContactPage() {
 
             <div className="flex flex-col justify-center">
               <h2 className="text-2xl font-bold mb-4">Lokasyonumuz</h2>
+
               <div className="aspect-square w-full rounded-xl overflow-hidden">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3060.4022479118985!2d32.72115281744385!3d39.90173899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d34e41ade85379%3A0xc9e42931bc764962!2sAnkara!5e0!3m2!1str!2str!4v1654170052661!5m2!1str!2str"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3005.4142740668723!2d28.803431499999998!3d41.0815278!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDA0JzUzLjUiTiAyOMKwNDgnMjAuMiJF!5e0!3m2!1str!2str!4v1726453935036!5m2!1str!2str"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -104,6 +106,17 @@ export default function ContactPage() {
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
+              </div>
+              <div className="mt-4">
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=41.081528,28.80562"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-[#febd00] rounded-lg text-black font-medium hover:bg-[#febd00]/90 transition-colors"
+                >
+                  <MapPin className="h-5 w-5 mr-2" />
+                  Yol Tarifi Al
+                </a>
               </div>
             </div>
           </div>
