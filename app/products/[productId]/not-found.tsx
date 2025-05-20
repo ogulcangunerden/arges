@@ -11,7 +11,7 @@ export default function ProductNotFound() {
         </p>
         <Link
           href="/products"
-          className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded bg-[#febd00] text-black hover:bg-[#e0a800] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
           Tüm Ürünlere Dön
         </Link>

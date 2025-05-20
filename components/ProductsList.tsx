@@ -188,7 +188,7 @@ function ProductCard({ product }: { product: Product }) {
         <div className="mt-auto flex justify-end">
           <Link
             href={`/products/${product.id}`}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300"
+            className="bg-[#febd00] text-black hover:bg-[#e0a800] px-4 py-2 rounded text-sm font-medium transition-colors duration-300"
           >
             Detaylar
           </Link>

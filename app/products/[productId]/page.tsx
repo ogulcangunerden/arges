@@ -40,7 +40,7 @@ export default async function ProductDetailPage({
       <div className="mb-6">
         <Link
           href="/products"
-          className="text-blue-600 hover:underline inline-flex items-center"
+          className=" text-[[#febd00]] inline-flex items-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -98,11 +98,11 @@ export default async function ProductDetailPage({
           <div className="mb-6">
             <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
             <div className="flex flex-wrap gap-2 mb-4">
-              <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full">
+              <span className="inline-block px-3 py-1 bg-[#febd00] text-black hover:bg-[#e0a800] text-sm font-medium rounded-full">
                 {product.category}
               </span>
               {product.brand && (
-                <span className="inline-block px-3 py-1 bg-gray-50 text-gray-700 text-sm font-medium rounded-full">
+                <span className="inline-block px-3 py-1  bg-black  text-[#febd00] text-sm font-medium rounded-full">
                   {product.brand}
                 </span>
               )}
@@ -144,7 +144,7 @@ export default async function ProductDetailPage({
           <div className="mt-8">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium bg-[#febd00] text-black hover:bg-[#e0a800] rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               İletişime Geç
             </Link>

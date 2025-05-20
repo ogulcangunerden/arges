@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import { Menu, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,61 +17,73 @@ import { getBrands } from "@/lib/firebase/brands";
 import { Category } from "@/types/category";
 import { Brand } from "@/types/brand";
 
-async function buildNavItems() {
-  try {
-    const [categoriesData, brandsData] = await Promise.all([
-      getCategories(),
-      getBrands(),
-    ]);
+type SubItem = {
+  name: string;
+  href: string;
+};
 
-    return [
-      { name: "Ana Sayfa", href: "/" },
-      {
-        name: "Kategoriler",
-        href: "/categories",
-        hasDropdown: true,
-        items: categoriesData.map((category) => ({
-          name: category.name,
-          href: `/products?category=${category.id}`,
-        })),
-      },
-      {
-        name: "Markalar",
-        href: "/brands",
-        hasDropdown: true,
-        items: brandsData.map((brand) => ({
-          name: brand.name,
-          href: `/products?brand=${brand.id}`,
-        })),
-      },
-      { name: "Hakkımızda", href: "/about" },
-      { name: "İletişim", href: "/contact" },
-    ];
-  } catch (error) {
-    console.error("Error building nav items:", error);
-    // Fallback to basic nav without dropdowns
-    return [
-      { name: "Ana Sayfa", href: "/" },
-      { name: "Kategoriler", href: "/categories" },
-      { name: "Markalar", href: "/brands" },
-      { name: "Hakkımızda", href: "/about" },
-      { name: "İletişim", href: "/contact" },
-    ];
-  }
+type NavItem = {
+  name: string;
+  href: string;
+  hasDropdown?: boolean;
+  items?: SubItem[];
+};
+
+function buildNavItems(categories: Category[], brands: Brand[]): NavItem[] {
+  return [
+    { name: "Ana Sayfa", href: "/" },
+    {
+      name: "Kategoriler",
+      href: "/categories",
+      hasDropdown: true,
+      items: categories.map((category) => ({
+        name: category.name,
+        href: `/products?category=${category.id}`,
+      })),
+    },
+    {
+      name: "Markalar",
+      href: "/brands",
+      hasDropdown: true,
+      items: brands.map((brand) => ({
+        name: brand.name,
+        href: `/products?brand=${brand.id}`,
+      })),
+    },
+    { name: "Hakkımızda", href: "/about" },
+    { name: "İletişim", href: "/contact" },
+  ];
 }
 
-export async function Header() {
-  const navItems = await buildNavItems();
+export function Header() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [navItems, setNavItems] = useState<NavItem[]>([
+    { name: "Ana Sayfa", href: "/" },
+    { name: "Kategoriler", href: "/categories" },
+    { name: "Markalar", href: "/brands" },
+    { name: "Hakkımızda", href: "/about" },
+    { name: "İletişim", href: "/contact" },
+  ]);
 
-  // Get categories and brands separately for mobile menu
-  let categories: Category[] = [];
-  let brands: Brand[] = [];
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [categoriesData, brandsData] = await Promise.all([
+          getCategories(),
+          getBrands(),
+        ]);
 
-  try {
-    [categories, brands] = await Promise.all([getCategories(), getBrands()]);
-  } catch (error) {
-    console.error("Error fetching data for mobile menu:", error);
-  }
+        setCategories(categoriesData);
+        setBrands(brandsData);
+        setNavItems(buildNavItems(categoriesData, brandsData));
+      } catch (error) {
+        console.error("Error fetching data for header:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

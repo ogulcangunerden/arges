@@ -106,7 +106,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="hidden lg:flex justify-end relative z-10">
+          <div className="flex justify-center lg:justify-end relative z-10">
             <div className="relative w-full max-w-lg">
               <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-primary to-primary/70 opacity-30 blur-xl"></div>
               <div className="relative overflow-hidden rounded-2xl border border-border bg-card">

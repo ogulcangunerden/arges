@@ -1,27 +1,40 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { useState, useEffect } from "react";
 import { getCategories } from "@/lib/firebase/categories";
 import { getBrands } from "@/lib/firebase/brands";
 import { Category } from "@/types/category";
 import { Brand } from "@/types/brand";
 
-export async function Footer() {
-  // Fetch categories and brands data from Firebase
-  let categories: Category[] = [];
-  let brands: Brand[] = [];
+export function Footer() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [year, setYear] = useState<number>(2024); // Fallback default
 
-  try {
-    const [categoriesData, brandsData] = await Promise.all([
-      getCategories(),
-      getBrands(),
-    ]);
+  useEffect(() => {
+    // Update the year on the client
+    setYear(new Date().getFullYear());
 
-    categories = categoriesData;
-    brands = brandsData;
-  } catch (error) {
-    console.error("Error fetching data for footer:", error);
-  }
+    // Fetch data
+    const fetchData = async () => {
+      try {
+        const [categoriesData, brandsData] = await Promise.all([
+          getCategories(),
+          getBrands(),
+        ]);
+
+        setCategories(categoriesData);
+        setBrands(brandsData);
+      } catch (error) {
+        console.error("Error fetching data for footer:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <footer className="bg-card border-t border-border text-foreground py-12">
@@ -174,8 +187,7 @@ export async function Footer() {
 
         <div className="border-t border-border mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Arges Makine. Tüm hakları
-            saklıdır.
+            &copy; {year} Arges Makine. Tüm hakları saklıdır.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link

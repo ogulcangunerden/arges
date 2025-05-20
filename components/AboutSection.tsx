@@ -11,7 +11,7 @@ export function AboutSection() {
             <div className="relative w-full max-w-md mx-auto rounded-2xl overflow-hidden shadow-lg">
               <div className="aspect-square relative">
                 <Image
-                  src="/images/jcb-makine.png"
+                  src="/brands/jcb-makine.png"
                   alt="Arges Makine İş Makineleri Yedek Parça"
                   fill
                   className="object-contain"
