@@ -32,6 +32,7 @@ type NavItem = {
 function buildNavItems(categories: Category[], brands: Brand[]): NavItem[] {
   return [
     { name: "Ana Sayfa", href: "/" },
+    { name: "Tüm Ürünler", href: "/products" },
     {
       name: "Kategoriler",
       href: "/categories",
@@ -60,6 +61,7 @@ export function Header() {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [navItems, setNavItems] = useState<NavItem[]>([
     { name: "Ana Sayfa", href: "/" },
+    { name: "Tüm Ürünler", href: "/products" },
     { name: "Kategoriler", href: "/categories" },
     { name: "Markalar", href: "/brands" },
     { name: "Hakkımızda", href: "/about" },
@@ -147,7 +149,13 @@ export function Header() {
             variant="default"
             className="hidden md:flex bg-[#febd00] hover:bg-[#e0a800] text-black"
           >
-            <Link href="/contact">Teklif Al</Link>
+            <a
+              href="https://wa.me/905394437905?text=Arges%20Makine%20%C3%BCr%C3%BCnleri%20hakk%C4%B1nda%20teklif%20almak%20istiyorum."
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Teklif Al
+            </a>
           </Button>
 
           {/* Mobile Navigation */}
@@ -164,6 +172,13 @@ export function Header() {
                 className="hover:bg-zinc-100 hover:text-[#febd00] rounded"
               >
                 <Link href="/">Ana Sayfa</Link>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                asChild
+                className="hover:bg-zinc-100 hover:text-[#febd00] rounded"
+              >
+                <Link href="/products">Tüm Ürünler</Link>
               </DropdownMenuItem>
 
               <DropdownMenuSeparator className="my-1" />
@@ -234,7 +249,13 @@ export function Header() {
                 asChild
                 className="bg-[#febd00] text-black hover:bg-[#e0a800] rounded"
               >
-                <Link href="/contact">Teklif Al</Link>
+                <a
+                  href="https://wa.me/905394437905?text=Arges%20Makine%20%C3%BCr%C3%BCnleri%20hakk%C4%B1nda%20teklif%20almak%20istiyorum."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Teklif Al
+                </a>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
