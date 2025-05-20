@@ -1,11 +1,12 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import ProductsList from "@/components/ProductsList";
 import ProductFilterSidebar from "@/components/ProductFilterSidebar";
+import { useSearchParams } from "next/navigation";
 
-export default function ProductsPage() {
+// Separate component for handling search params
+function ProductsContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
   const brandParam = searchParams.get("brand");
@@ -16,14 +17,6 @@ export default function ProductsPage() {
     : undefined;
   const decodedBrand = brandParam ? decodeURIComponent(brandParam) : undefined;
 
-  // Log what parameters are coming from the URL
-  useEffect(() => {
-    console.log("Raw URL Category Parameter:", categoryParam);
-    console.log("Raw URL Brand Parameter:", brandParam);
-    console.log("Decoded Category Parameter:", decodedCategory);
-    console.log("Decoded Brand Parameter:", decodedBrand);
-  }, [categoryParam, brandParam, decodedCategory, decodedBrand]);
-
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
     decodedCategory
   );
@@ -31,14 +24,8 @@ export default function ProductsPage() {
     decodedBrand
   );
 
-  // Update state when URL params change
-  useEffect(() => {
-    setSelectedCategory(decodedCategory);
-    setSelectedBrand(decodedBrand);
-  }, [decodedCategory, decodedBrand]);
-
   return (
-    <main className="container mx-auto px-4 py-12">
+    <>
       <div className="mb-10">
         <h1 className="text-3xl md:text-4xl font-bold mb-4">Ürünlerimiz</h1>
         <p className="text-muted-foreground text-lg">
@@ -67,7 +54,36 @@ export default function ProductsPage() {
           </Suspense>
         </div>
       </div>
+    </>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <main className="container mx-auto px-4 py-12">
+      <Suspense fallback={<PageLoadingSkeleton />}>
+        <ProductsContent />
+      </Suspense>
     </main>
+  );
+}
+
+function PageLoadingSkeleton() {
+  return (
+    <>
+      <div className="mb-10">
+        <div className="h-10 bg-muted rounded w-1/3 mb-4 animate-pulse"></div>
+        <div className="h-6 bg-muted rounded w-2/3 animate-pulse"></div>
+      </div>
+      <div className="flex flex-col md:flex-row gap-8">
+        <aside className="w-full md:w-64 flex-shrink-0">
+          <div className="h-96 bg-muted rounded animate-pulse"></div>
+        </aside>
+        <div className="flex-1">
+          <ProductsLoadingSkeleton />
+        </div>
+      </div>
+    </>
   );
 }
 
