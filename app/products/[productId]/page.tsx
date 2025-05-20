@@ -12,7 +12,9 @@ export async function generateMetadata({
   params: { productId: string };
 }): Promise<Metadata> {
   try {
-    const product = await getProductById(params.productId);
+    const awaitedParams = await params;
+    const productId = awaitedParams.productId;
+    const product = await getProductById(productId);
 
     if (!product) {
       return {
@@ -37,7 +39,9 @@ export default async function ProductDetailPage({
   params: { productId: string };
 }) {
   try {
-    const product = await getProductById(params.productId);
+    const awaitedParams = await params;
+    const productId = awaitedParams.productId;
+    const product = await getProductById(productId);
 
     if (!product) {
       notFound();
