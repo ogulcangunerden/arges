@@ -29,7 +29,7 @@ export default async function CategoriesPage() {
           {categories.map((category) => (
             <Link
               key={category.id}
-              href={`/products?category=${category.id}`}
+              href={`/products?category=${encodeURIComponent(category.name)}`}
               className="group relative rounded-xl overflow-hidden bg-card border border-border transition-all hover:shadow-md"
             >
               <div className="aspect-square relative">
