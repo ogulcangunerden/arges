@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getProducts, getFilteredProducts } from "@/lib/firebase/products";
 import { Product } from "@/types/product";
+import { useRouter, usePathname } from "next/navigation";
 
 interface ProductsListProps {
   selectedCategory?: string;
@@ -17,21 +18,35 @@ export default function ProductsList({
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [debug, setDebug] = useState<string>("");
+
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
+        // Log the filters being applied
+        console.log("Filtering with category:", selectedCategory);
+        console.log("Filtering with brand:", selectedBrand);
+
+        setDebug(
+          `Aranan kategori: "${selectedCategory}", Aranan marka: "${selectedBrand}"`
+        );
+
         // Use the filtered function if either filter is applied
         if (selectedCategory || selectedBrand) {
           const data = await getFilteredProducts(
             selectedCategory,
             selectedBrand
           );
+          console.log(`Found ${data.length} products with filters`);
           setProducts(data);
         } else {
           // Otherwise, fetch all products
           const data = await getProducts();
+          console.log(`Found ${data.length} total products`);
           setProducts(data);
         }
       } catch (err) {
@@ -44,6 +59,30 @@ export default function ProductsList({
 
     fetchProducts();
   }, [selectedCategory, selectedBrand]);
+
+  // Function to remove category filter
+  const handleRemoveCategory = () => {
+    if (selectedBrand) {
+      // If brand filter exists, keep it and remove only category
+      router.push(`${pathname}?brand=${encodeURIComponent(selectedBrand)}`);
+    } else {
+      // If no brand filter, clear all filters
+      router.push(pathname);
+    }
+  };
+
+  // Function to remove brand filter
+  const handleRemoveBrand = () => {
+    if (selectedCategory) {
+      // If category filter exists, keep it and remove only brand
+      router.push(
+        `${pathname}?category=${encodeURIComponent(selectedCategory)}`
+      );
+    } else {
+      // If no category filter, clear all filters
+      router.push(pathname);
+    }
+  };
 
   if (loading) {
     return (
@@ -78,44 +117,101 @@ export default function ProductsList({
     );
   }
 
-  if (products.length === 0) {
-    return (
-      <div className="text-center py-20">
-        <div className="text-yellow-500 mb-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-12 w-12 mx-auto"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-            />
-          </svg>
-        </div>
-        <h3 className="text-xl font-semibold mb-2">
-          {selectedCategory || selectedBrand
-            ? "Seçilen filtrelerle ürün bulunamadı"
-            : "Henüz ürün yok"}
-        </h3>
-        <p className="text-gray-500">
-          {selectedCategory || selectedBrand
-            ? "Lütfen farklı filtreler deneyin."
-            : "Yakında ürünlerimiz eklenecektir."}
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+    <div>
+      {/* Display active filters regardless of whether products are found */}
+      {(selectedCategory || selectedBrand) && (
+        <div className="mb-6 bg-blue-50 p-4 rounded-lg">
+          <h2 className="text-lg font-semibold mb-2">Filtrelenmiş Ürünler</h2>
+          <div className="flex flex-wrap gap-2">
+            {selectedCategory && (
+              <button
+                onClick={handleRemoveCategory}
+                className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full hover:bg-blue-200 transition-colors"
+              >
+                Kategori: {selectedCategory}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 ml-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            )}
+            {selectedBrand && (
+              <button
+                onClick={handleRemoveBrand}
+                className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full hover:bg-blue-200 transition-colors"
+              >
+                Marka: {selectedBrand}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 ml-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
+          <p className="text-sm text-gray-600 mt-2">
+            {products.length} ürün bulundu
+          </p>
+        </div>
+      )}
+
+      {products.length === 0 ? (
+        <div className="text-center py-20">
+          <div className="text-yellow-500 mb-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-12 w-12 mx-auto"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+              />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold mb-2">
+            {selectedCategory || selectedBrand
+              ? "Seçilen filtrelerle ürün bulunamadı"
+              : "Henüz ürün yok"}
+          </h3>
+          <p className="text-gray-500">
+            {selectedCategory || selectedBrand
+              ? "Lütfen farklı filtreler deneyin."
+              : "Yakında ürünlerimiz eklenecektir."}
+          </p>
+          {debug && <p className="text-xs text-gray-400 mt-4">{debug}</p>}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

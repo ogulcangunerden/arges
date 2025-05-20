@@ -104,7 +104,9 @@ export function Footer() {
               {categories.slice(0, 6).map((category) => (
                 <li key={category.id}>
                   <Link
-                    href={`/products?category=${category.id}`}
+                    href={`/products?category=${encodeURIComponent(
+                      category.name
+                    )}`}
                     className="text-foreground hover:text-primary transition-colors"
                   >
                     {category.name}
@@ -132,7 +134,7 @@ export function Footer() {
               {brands.slice(0, 6).map((brand) => (
                 <li key={brand.id}>
                   <Link
-                    href={`/products?brand=${brand.id}`}
+                    href={`/products?brand=${encodeURIComponent(brand.name)}`}
                     className="text-foreground hover:text-primary transition-colors"
                   >
                     {brand.name}

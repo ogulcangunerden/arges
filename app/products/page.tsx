@@ -1,16 +1,41 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import ProductsList from "@/components/ProductsList";
 import ProductFilterSidebar from "@/components/ProductFilterSidebar";
 
 export default function ProductsPage() {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category");
+  const brandParam = searchParams.get("brand");
+
+  // Decode URL parameters if they exist
+  const decodedCategory = categoryParam
+    ? decodeURIComponent(categoryParam)
+    : undefined;
+  const decodedBrand = brandParam ? decodeURIComponent(brandParam) : undefined;
+
+  // Log what parameters are coming from the URL
+  useEffect(() => {
+    console.log("Raw URL Category Parameter:", categoryParam);
+    console.log("Raw URL Brand Parameter:", brandParam);
+    console.log("Decoded Category Parameter:", decodedCategory);
+    console.log("Decoded Brand Parameter:", decodedBrand);
+  }, [categoryParam, brandParam, decodedCategory, decodedBrand]);
+
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
-    undefined
+    decodedCategory
   );
   const [selectedBrand, setSelectedBrand] = useState<string | undefined>(
-    undefined
+    decodedBrand
   );
+
+  // Update state when URL params change
+  useEffect(() => {
+    setSelectedCategory(decodedCategory);
+    setSelectedBrand(decodedBrand);
+  }, [decodedCategory, decodedBrand]);
 
   return (
     <main className="container mx-auto px-4 py-12">

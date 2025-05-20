@@ -38,7 +38,7 @@ function buildNavItems(categories: Category[], brands: Brand[]): NavItem[] {
       hasDropdown: true,
       items: categories.map((category) => ({
         name: category.name,
-        href: `/products?category=${category.id}`,
+        href: `/products?category=${encodeURIComponent(category.name)}`,
       })),
     },
     {
@@ -47,7 +47,7 @@ function buildNavItems(categories: Category[], brands: Brand[]): NavItem[] {
       hasDropdown: true,
       items: brands.map((brand) => ({
         name: brand.name,
-        href: `/products?brand=${brand.id}`,
+        href: `/products?brand=${encodeURIComponent(brand.name)}`,
       })),
     },
     { name: "Hakkımızda", href: "/about" },
@@ -182,7 +182,11 @@ export function Header() {
                   asChild
                   className="pl-6 hover:bg-zinc-100 hover:text-[#febd00] rounded"
                 >
-                  <Link href={`/products?category=${category.id}`}>
+                  <Link
+                    href={`/products?category=${encodeURIComponent(
+                      category.name
+                    )}`}
+                  >
                     {category.name}
                   </Link>
                 </DropdownMenuItem>
@@ -204,7 +208,11 @@ export function Header() {
                   asChild
                   className="pl-6 hover:bg-zinc-100 hover:text-[#febd00] rounded"
                 >
-                  <Link href={`/products?brand=${brand.id}`}>{brand.name}</Link>
+                  <Link
+                    href={`/products?brand=${encodeURIComponent(brand.name)}`}
+                  >
+                    {brand.name}
+                  </Link>
                 </DropdownMenuItem>
               ))}
 

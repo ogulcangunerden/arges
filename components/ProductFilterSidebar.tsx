@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { getCategories } from "@/lib/firebase/categories";
 import { getBrands } from "@/lib/firebase/brands";
 import { Category } from "@/types/category";
@@ -24,6 +25,9 @@ export default function ProductFilterSidebar({
   const [loading, setLoading] = useState(true);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const router = useRouter();
+  const pathname = usePathname();
+
   useEffect(() => {
     const fetchFilters = async () => {
       try {
@@ -43,19 +47,76 @@ export default function ProductFilterSidebar({
     fetchFilters();
   }, []);
 
-  const handleCategoryClick = (categoryId: string) => {
-    // If already selected, clear it; otherwise, select it
-    onCategoryChange(selectedCategory === categoryId ? undefined : categoryId);
+  const handleCategoryClick = (categoryName: string) => {
+    const newCategory = selectedCategory === categoryName ? null : categoryName;
+
+    // Update the URL with properly encoded parameters
+    if (newCategory) {
+      const encodedCategory = encodeURIComponent(newCategory);
+      const encodedBrand = selectedBrand
+        ? encodeURIComponent(selectedBrand)
+        : "";
+      router.push(
+        `${pathname}?category=${encodedCategory}${
+          encodedBrand ? `&brand=${encodedBrand}` : ""
+        }`
+      );
+    } else if (selectedBrand) {
+      // If only brand is selected
+      router.push(`${pathname}?brand=${encodeURIComponent(selectedBrand)}`);
+    } else {
+      // Clear all filters
+      router.push(pathname);
+    }
+
+    // Update local state
+    onCategoryChange(newCategory || undefined);
+
+    // Close the filter dropdown on mobile
+    setIsFilterOpen(false);
   };
 
-  const handleBrandClick = (brandId: string) => {
-    // If already selected, clear it; otherwise, select it
-    onBrandChange(selectedBrand === brandId ? undefined : brandId);
+  const handleBrandClick = (brandName: string) => {
+    const newBrand = selectedBrand === brandName ? null : brandName;
+
+    // Update the URL with properly encoded parameters
+    if (newBrand) {
+      const encodedBrand = encodeURIComponent(newBrand);
+      const encodedCategory = selectedCategory
+        ? encodeURIComponent(selectedCategory)
+        : "";
+      router.push(
+        `${pathname}?${
+          encodedCategory ? `category=${encodedCategory}&` : ""
+        }brand=${encodedBrand}`
+      );
+    } else if (selectedCategory) {
+      // If only category is selected
+      router.push(
+        `${pathname}?category=${encodeURIComponent(selectedCategory)}`
+      );
+    } else {
+      // Clear all filters
+      router.push(pathname);
+    }
+
+    // Update local state
+    onBrandChange(newBrand || undefined);
+
+    // Close the filter dropdown on mobile
+    setIsFilterOpen(false);
   };
 
   const clearAllFilters = () => {
+    // Clear URL and navigate
+    router.push(pathname);
+
+    // Update local state
     onCategoryChange(undefined);
     onBrandChange(undefined);
+
+    // Close the filter dropdown on mobile
+    setIsFilterOpen(false);
   };
 
   const hasActiveFilters = !!selectedCategory || !!selectedBrand;
