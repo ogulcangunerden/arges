@@ -9,10 +9,10 @@ import { FirebaseError } from "firebase/app";
 export async function generateMetadata({
   params,
 }: {
-  params: { productId: string };
+  params: Promise<{ productId: string }>;
 }): Promise<Metadata> {
   try {
-    const productId = (await params).productId;
+    const { productId } = await params;
     const product = await getProductById(productId);
 
     if (!product) {
@@ -35,10 +35,10 @@ export async function generateMetadata({
 export default async function ProductDetailPage({
   params,
 }: {
-  params: { productId: string };
+  params: Promise<{ productId: string }>;
 }) {
   try {
-    const productId = (await params).productId;
+    const { productId } = await params;
     const product = await getProductById(productId);
 
     if (!product) {
