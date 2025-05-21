@@ -1,7 +1,8 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
+import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import {
   getFirestore,
   enableMultiTabIndexedDbPersistence,
+  Firestore,
 } from "firebase/firestore";
 
 // Debug logging for environment info
@@ -21,8 +22,8 @@ const firebaseConfig = {
 console.log("Firebase config:", { ...firebaseConfig, apiKey: "[REDACTED]" });
 
 // Initialize Firebase
-let app;
-let db;
+let app: FirebaseApp;
+let db: Firestore;
 
 try {
   console.log("Initializing Firebase app...");
