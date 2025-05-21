@@ -4,7 +4,8 @@ import {
   enableMultiTabIndexedDbPersistence,
 } from "firebase/firestore";
 
-// Debug logging for firebase config
+// Debug logging for environment info
+console.log("Environment:", process.env.NODE_ENV);
 console.log("Firebase projectId:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
 
 const firebaseConfig = {
@@ -20,8 +21,22 @@ const firebaseConfig = {
 console.log("Firebase config:", { ...firebaseConfig, apiKey: "[REDACTED]" });
 
 // Initialize Firebase
-export const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-export const db = getFirestore(app);
+let app;
+let db;
+
+try {
+  console.log("Initializing Firebase app...");
+  app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+  console.log("Firebase app initialized successfully");
+  db = getFirestore(app);
+  console.log("Firestore initialized successfully");
+} catch (error) {
+  console.error("Error initializing Firebase:", error);
+  throw error;
+}
+
+// Export the Firebase app and db
+export { app, db };
 
 // Only enable persistence in development environment
 if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
