@@ -38,7 +38,6 @@ try {
 
 // Export the Firebase app and db
 export { app, db };
-
 // Only enable persistence in development environment
 if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
   try {
