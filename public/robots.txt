@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
+Allow: /products/
+Allow: /categories/
+Allow: /brands/
+
+# Ürün sayfalarına öncelik verildi
+Crawl-delay: 1
 
 Sitemap: https://argesmakine.com/sitemap.xml 

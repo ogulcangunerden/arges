@@ -320,12 +320,21 @@ export default function ProductsList({
 }
 
 function ProductCard({ product }: { product: Product }) {
+  // Create a rich SEO-friendly alt text
+  const altText = `${product.name} - ${product.brand || ""} ${
+    product.category || ""
+  } yedek parça - Arges Makine`;
+
   return (
-    <div className="card overflow-hidden bg-white hover:shadow-xl transition-shadow duration-300 group border h-full">
+    <div
+      className="card overflow-hidden bg-white hover:shadow-xl transition-shadow duration-300 group border h-full"
+      itemScope
+      itemType="https://schema.org/Product"
+    >
       <div className="relative aspect-square">
         <Image
           src={product.imageUrl || "/images/placeholder.png"}
-          alt={product.name}
+          alt={altText}
           fill
           className="object-cover transition-all group-hover:scale-105 duration-300"
           priority={false}
@@ -344,25 +353,39 @@ function ProductCard({ product }: { product: Product }) {
 
       <div className="p-4 flex flex-col flex-grow">
         <div className="mb-2">
-          <span className="inline-block text-xs font-medium text-[#febd00] bg-black px-2 py-1 rounded-full">
+          <span
+            className="inline-block text-xs font-medium text-[#febd00] bg-black px-2 py-1 rounded-full"
+            itemProp="category"
+          >
             {product.category || "Genel"}
           </span>
           {product.brand && (
-            <span className="inline-block ml-2 text-xs font-medium text-[#febd00] bg-black px-2 py-1 rounded-full">
+            <span
+              className="inline-block ml-2 text-xs font-medium text-[#febd00] bg-black px-2 py-1 rounded-full"
+              itemProp="brand"
+            >
               {product.brand}
             </span>
           )}
         </div>
 
-        <h3 className="text-lg font-bold mb-2 text-gray-800">{product.name}</h3>
+        <h3 className="text-lg font-bold mb-2 text-gray-800" itemProp="name">
+          {product.name}
+        </h3>
 
-        <p className="text-sm text-gray-500 mb-4 line-clamp-3 flex-grow">
+        <p
+          className="text-sm text-gray-500 mb-4 line-clamp-3 flex-grow"
+          itemProp="description"
+        >
           {product.description}
         </p>
 
         <Link
           href={`/products/${product.id}`}
           className="mt-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#febd00] hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+          title={`${product.name} detaylarına bakın - ${
+            product.category || ""
+          } ${product.brand || ""}`}
         >
           Detayları Gör
           <svg
@@ -371,6 +394,7 @@ function ProductCard({ product }: { product: Product }) {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
