@@ -1,19 +1,19 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { getProducts, getFilteredProducts } from "@/lib/firebase/products";
 import { Product } from "@/types/product";
 import { useRouter, usePathname } from "next/navigation";
-import { DocumentSnapshot } from "firebase/firestore";
+import ReactPaginate from "react-paginate";
 
 interface ProductsListProps {
   selectedCategory?: string;
   selectedBrand?: string;
 }
 
-const PRODUCTS_PER_PAGE = 50;
+const PRODUCTS_PER_PAGE = 20;
 
 export default function ProductsList({
   selectedCategory,
@@ -21,141 +21,81 @@ export default function ProductsList({
 }: ProductsListProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [lastVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
-  const observer = useRef<IntersectionObserver | null>(null);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-  // Track if an initial load is in progress to prevent duplicate calls
-  const isLoadingRef = useRef<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   const router = useRouter();
   const pathname = usePathname();
 
-  const loadProducts = useCallback(
-    async (isInitial: boolean = false) => {
-      // Prevent duplicate loading calls
-      if ((isInitial && isLoadingRef.current) || (!isInitial && loadingMore)) {
-        return;
+  const loadProducts = useCallback(async () => {
+    try {
+      setLoading(true);
+
+      // Use the filtered function if either filter is applied
+      let result;
+      if (selectedCategory || selectedBrand) {
+        result = await getFilteredProducts(
+          selectedCategory,
+          selectedBrand,
+          1000 // Fetch more initially to calculate pages
+        );
+      } else {
+        // Otherwise, fetch all products
+        result = await getProducts(1000);
       }
 
-      try {
-        if (isInitial) {
-          setLoading(true);
-          isLoadingRef.current = true;
-        } else {
-          setLoadingMore(true);
-        }
+      setAllProducts(result.products);
+      setTotalPages(Math.ceil(result.products.length / PRODUCTS_PER_PAGE));
 
-        // Use the filtered function if either filter is applied
-        let result;
-        if (selectedCategory || selectedBrand) {
-          result = await getFilteredProducts(
-            selectedCategory,
-            selectedBrand,
-            PRODUCTS_PER_PAGE,
-            isInitial ? null : lastVisible
-          );
-        } else {
-          // Otherwise, fetch all products
-          // Reset pagination when filters are removed
-          result = await getProducts(
-            PRODUCTS_PER_PAGE,
-            isInitial ? null : lastVisible
-          );
-        }
-
-        if (result.products.length === 0) {
-          setHasMore(false);
-        } else {
-          setLastVisible(result.lastVisible);
-          if (isInitial) {
-            // Replace the products array with new results when doing an initial load
-            setProducts(result.products);
-          } else {
-            // Append products for pagination
-            setProducts((prev) => [...prev, ...result.products]);
-          }
-          setHasMore(result.products.length === PRODUCTS_PER_PAGE);
-        }
-      } catch (err) {
-        if (process.env.NODE_ENV !== "production") {
-          console.error("Error fetching products:", err);
-        }
-        setError("Ürünler yüklenirken bir hata oluştu.");
-      } finally {
-        if (isInitial) {
-          setLoading(false);
-          isLoadingRef.current = false;
-        } else {
-          setLoadingMore(false);
-        }
+      // Set the initial page of products
+      const initialProducts = result.products.slice(0, PRODUCTS_PER_PAGE);
+      setProducts(initialProducts);
+    } catch (err) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Error fetching products:", err);
       }
-    },
-    [selectedCategory, selectedBrand, lastVisible, loadingMore]
-  );
+      setError("Ürünler yüklenirken bir hata oluştu.");
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedCategory, selectedBrand]);
 
   // Initial load of products
   useEffect(() => {
     // Reset state for new filter selections
-    setHasMore(true);
-    setLastVisible(null);
     setProducts([]);
+    setAllProducts([]);
+    setCurrentPage(0);
     setError(null);
 
     // Important: Reset loading state to ensure UI shows loading indicator
     setLoading(true);
 
-    // Also reset the loading ref to avoid potential race conditions
-    isLoadingRef.current = false;
-
     // Load products with the new filters
-    loadProducts(true);
+    loadProducts();
+  }, [selectedCategory, selectedBrand, loadProducts]);
 
-    // Cleanup function
-    return () => {
-      isLoadingRef.current = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategory, selectedBrand]);
+  // Handle page change
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+    const startOffset = selected * PRODUCTS_PER_PAGE;
+    const endOffset = startOffset + PRODUCTS_PER_PAGE;
+    setProducts(allProducts.slice(startOffset, endOffset));
 
-  // Setup intersection observer for infinite scroll
-  useEffect(() => {
-    if (loading || !hasMore) return;
-
-    if (observer.current) observer.current.disconnect();
-
-    const callback = (entries: IntersectionObserverEntry[]) => {
-      if (
-        entries[0].isIntersecting &&
-        hasMore &&
-        !loadingMore &&
-        !isLoadingRef.current
-      ) {
-        loadProducts();
-      }
-    };
-
-    observer.current = new IntersectionObserver(callback, {
-      rootMargin: "100px",
+    // Scroll to top when changing pages
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
-
-    if (loadMoreRef.current) {
-      observer.current.observe(loadMoreRef.current);
-    }
-
-    return () => {
-      if (observer.current) observer.current.disconnect();
-    };
-  }, [loading, hasMore, loadingMore, loadProducts]);
+  };
 
   // Function to remove category filter
   const handleRemoveCategory = () => {
     // Reset products state first to ensure clean slate
     setProducts([]);
-    setLastVisible(null);
-    setHasMore(true);
+    setCurrentPage(0);
 
     if (selectedBrand) {
       // If brand filter exists, keep it and remove only category
@@ -170,8 +110,7 @@ export default function ProductsList({
   const handleRemoveBrand = () => {
     // Reset products state first to ensure clean slate
     setProducts([]);
-    setLastVisible(null);
-    setHasMore(true);
+    setCurrentPage(0);
 
     if (selectedCategory) {
       // If category filter exists, keep it and remove only brand
@@ -274,13 +213,13 @@ export default function ProductsList({
             )}
           </div>
           <p className="text-sm text-gray-600 mt-2">
-            {products.length} ürün bulundu
+            {allProducts.length} ürün bulundu
           </p>
         </div>
       )}
 
       {/* No products message */}
-      {products.length === 0 && (
+      {allProducts.length === 0 && (
         <div className="text-center py-20 bg-gray-50 rounded-lg">
           <div className="text-gray-500 mb-2">
             <svg
@@ -316,22 +255,28 @@ export default function ProductsList({
             ))}
           </div>
 
-          {/* Loading more indicator */}
-          <div ref={loadMoreRef} className="w-full py-8 flex justify-center">
-            {loadingMore && (
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-            )}
-            {!loadingMore && hasMore && (
-              <div className="text-gray-500 text-sm">
-                Daha fazla ürün yükleniyor...
-              </div>
-            )}
-            {!hasMore && products.length > 0 && (
-              <div className="text-gray-500 text-sm">
-                Tüm ürünler gösteriliyor
-              </div>
-            )}
-          </div>
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-8">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel="İleri &raquo;"
+                onPageChange={handlePageChange}
+                pageRangeDisplayed={5}
+                pageCount={totalPages}
+                previousLabel="&laquo; Geri"
+                renderOnZeroPageCount={null}
+                forcePage={currentPage}
+                containerClassName="flex justify-center items-center list-none"
+                pageLinkClassName="px-4 py-2 mx-1 rounded-md border hover:bg-gray-100 transition-colors"
+                previousLinkClassName="px-4 py-2 mx-1 rounded-md border hover:bg-gray-100 transition-colors"
+                nextLinkClassName="px-4 py-2 mx-1 rounded-md border hover:bg-gray-100 transition-colors"
+                activeLinkClassName="bg-[#febd00] text-white border-[#febd00] hover:bg-[#febd00]"
+                disabledLinkClassName="cursor-not-allowed opacity-50"
+                breakLinkClassName="px-4 py-2 mx-1"
+              />
+            </div>
+          )}
         </section>
       )}
     </div>
