@@ -13,7 +13,7 @@ interface ProductsListProps {
   selectedBrand?: string;
 }
 
-const PRODUCTS_PER_PAGE = 20;
+const PRODUCTS_PER_PAGE = 18;
 
 export default function ProductsList({
   selectedCategory,
