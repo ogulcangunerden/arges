@@ -1,16 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { getProducts, getFilteredProducts } from "@/lib/firebase/products";
 import { Product } from "@/types/product";
 import { useRouter, usePathname } from "next/navigation";
+import { DocumentSnapshot } from "firebase/firestore";
 
 interface ProductsListProps {
   selectedCategory?: string;
   selectedBrand?: string;
 }
+
+const PRODUCTS_PER_PAGE = 50;
 
 export default function ProductsList({
   selectedCategory,
@@ -18,26 +21,52 @@ export default function ProductsList({
 }: ProductsListProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [lastVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
+  const loadProducts = useCallback(
+    async (isInitial: boolean = false) => {
       try {
+        if (isInitial) {
+          setLoading(true);
+        } else {
+          setLoadingMore(true);
+        }
+
         // Use the filtered function if either filter is applied
+        let result;
         if (selectedCategory || selectedBrand) {
-          const data = await getFilteredProducts(
+          result = await getFilteredProducts(
             selectedCategory,
-            selectedBrand
+            selectedBrand,
+            PRODUCTS_PER_PAGE,
+            isInitial ? null : lastVisible
           );
-          setProducts(data);
         } else {
           // Otherwise, fetch all products
-          const data = await getProducts();
-          setProducts(data);
+          result = await getProducts(
+            PRODUCTS_PER_PAGE,
+            isInitial ? null : lastVisible
+          );
+        }
+
+        if (result.products.length === 0) {
+          setHasMore(false);
+        } else {
+          setLastVisible(result.lastVisible);
+          if (isInitial) {
+            setProducts(result.products);
+          } else {
+            setProducts((prev) => [...prev, ...result.products]);
+          }
+          setHasMore(result.products.length === PRODUCTS_PER_PAGE);
         }
       } catch (err) {
         if (process.env.NODE_ENV !== "production") {
@@ -45,12 +74,48 @@ export default function ProductsList({
         }
         setError("Ürünler yüklenirken bir hata oluştu.");
       } finally {
-        setLoading(false);
+        if (isInitial) {
+          setLoading(false);
+        } else {
+          setLoadingMore(false);
+        }
+      }
+    },
+    [selectedCategory, selectedBrand, lastVisible]
+  );
+
+  // Initial load of products
+  useEffect(() => {
+    setHasMore(true);
+    setLastVisible(null);
+    setProducts([]);
+    loadProducts(true);
+  }, [selectedCategory, selectedBrand, loadProducts]);
+
+  // Setup intersection observer for infinite scroll
+  useEffect(() => {
+    if (loading || !hasMore) return;
+
+    if (observer.current) observer.current.disconnect();
+
+    const callback = (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting && hasMore && !loadingMore) {
+        loadProducts();
       }
     };
 
-    fetchProducts();
-  }, [selectedCategory, selectedBrand]);
+    observer.current = new IntersectionObserver(callback, {
+      rootMargin: "100px",
+    });
+
+    if (loadMoreRef.current) {
+      observer.current.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
+  }, [loading, hasMore, loadingMore, loadProducts]);
 
   // Function to remove category filter
   const handleRemoveCategory = () => {
@@ -197,10 +262,29 @@ export default function ProductsList({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+
+          {/* Loading more indicator */}
+          <div ref={loadMoreRef} className="w-full py-8 flex justify-center">
+            {loadingMore && (
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+            )}
+            {!loadingMore && hasMore && (
+              <div className="text-gray-500 text-sm">
+                Daha fazla ürün yükleniyor...
+              </div>
+            )}
+            {!hasMore && products.length > 0 && (
+              <div className="text-gray-500 text-sm">
+                Tüm ürünler gösteriliyor
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
@@ -209,44 +293,17 @@ export default function ProductsList({
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
-      {product.imageUrl ? (
-        <div className="h-48 overflow-hidden relative">
-          {/* Product image */}
-          <Image
-            src={product.imageUrl}
-            alt={product.name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          {/* Logo watermark overlay */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-            <Image
-              src="/arges-yazi.svg"
-              alt="Logo Watermark"
-              fill
-              className="opacity-60"
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="h-48 bg-gray-100 flex items-center justify-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-16 w-16 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-        </div>
-      )}
+    <div className="card overflow-hidden bg-white hover:shadow-xl transition-shadow duration-300 group border h-full">
+      <div className="relative aspect-square">
+        <Image
+          src={product.imageUrl || "/images/placeholder.png"}
+          alt={product.name}
+          fill
+          className="object-cover transition-all group-hover:scale-105 duration-300"
+          priority={false}
+          unoptimized={true}
+        />
+      </div>
 
       <div className="p-4 flex flex-col flex-grow">
         <div className="mb-2">

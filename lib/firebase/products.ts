@@ -5,9 +5,11 @@ import {
   doc,
   query,
   orderBy,
+  startAfter,
   where,
   DocumentSnapshot,
   QueryConstraint,
+  limit,
 } from "firebase/firestore";
 import { db } from "@/app/firebase/config";
 import { Product } from "@/types/product";
@@ -33,16 +35,34 @@ export const convertFirestoreDocToProduct = (
   };
 };
 
-// Get all products
-export const getProducts = async (): Promise<Product[]> => {
+// Get all products with pagination
+export const getProducts = async (
+  pageSize = 50,
+  startAfterDoc: DocumentSnapshot | null = null
+): Promise<{ products: Product[]; lastVisible: DocumentSnapshot | null }> => {
   try {
-    const q = query(
-      collection(db, COLLECTION_NAME),
-      orderBy("createdAt", "desc")
-    );
+    const constraints: QueryConstraint[] = [
+      orderBy("createdAt", "desc"),
+      limit(pageSize),
+    ];
+
+    // If we have a document to start after, add that constraint
+    if (startAfterDoc) {
+      constraints.push(startAfter(startAfterDoc));
+    }
+
+    const q = query(collection(db, COLLECTION_NAME), ...constraints);
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map(convertFirestoreDocToProduct);
+    const products = querySnapshot.docs.map(convertFirestoreDocToProduct);
+
+    // Get the last visible document for pagination
+    const lastVisible =
+      querySnapshot.docs.length > 0
+        ? querySnapshot.docs[querySnapshot.docs.length - 1]
+        : null;
+
+    return { products, lastVisible };
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
       console.error("Error getting products:", error);
@@ -53,17 +73,33 @@ export const getProducts = async (): Promise<Product[]> => {
 
 // Get products by category
 export const getProductsByCategory = async (
-  category: string
-): Promise<Product[]> => {
+  category: string,
+  pageSize = 50,
+  startAfterDoc: DocumentSnapshot | null = null
+): Promise<{ products: Product[]; lastVisible: DocumentSnapshot | null }> => {
   try {
-    const q = query(
-      collection(db, COLLECTION_NAME),
+    const constraints: QueryConstraint[] = [
       where("category", "==", category),
-      orderBy("createdAt", "desc")
-    );
+      orderBy("createdAt", "desc"),
+      limit(pageSize),
+    ];
+
+    if (startAfterDoc) {
+      constraints.push(startAfter(startAfterDoc));
+    }
+
+    const q = query(collection(db, COLLECTION_NAME), ...constraints);
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map(convertFirestoreDocToProduct);
+    const products = querySnapshot.docs.map(convertFirestoreDocToProduct);
+
+    // Get the last visible document for pagination
+    const lastVisible =
+      querySnapshot.docs.length > 0
+        ? querySnapshot.docs[querySnapshot.docs.length - 1]
+        : null;
+
+    return { products, lastVisible };
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
       console.error("Error getting products by category:", error);
@@ -75,8 +111,10 @@ export const getProductsByCategory = async (
 // Get products filtered by both category and brand
 export const getFilteredProducts = async (
   categoryName?: string,
-  brandName?: string
-): Promise<Product[]> => {
+  brandName?: string,
+  pageSize = 50,
+  startAfterDoc: DocumentSnapshot | null = null
+): Promise<{ products: Product[]; lastVisible: DocumentSnapshot | null }> => {
   try {
     const constraints: QueryConstraint[] = [];
 
@@ -89,12 +127,24 @@ export const getFilteredProducts = async (
     }
 
     constraints.push(orderBy("createdAt", "desc"));
+    constraints.push(limit(pageSize));
+
+    if (startAfterDoc) {
+      constraints.push(startAfter(startAfterDoc));
+    }
 
     const q = query(collection(db, COLLECTION_NAME), ...constraints);
     const querySnapshot = await getDocs(q);
+
     const products = querySnapshot.docs.map(convertFirestoreDocToProduct);
 
-    return products;
+    // Get the last visible document for pagination
+    const lastVisible =
+      querySnapshot.docs.length > 0
+        ? querySnapshot.docs[querySnapshot.docs.length - 1]
+        : null;
+
+    return { products, lastVisible };
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
       console.error("Error getting filtered products:", error);
