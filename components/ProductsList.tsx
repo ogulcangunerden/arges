@@ -59,6 +59,7 @@ export default function ProductsList({
           );
         } else {
           // Otherwise, fetch all products
+          // Reset pagination when filters are removed
           result = await getProducts(
             PRODUCTS_PER_PAGE,
             isInitial ? null : lastVisible
@@ -70,8 +71,10 @@ export default function ProductsList({
         } else {
           setLastVisible(result.lastVisible);
           if (isInitial) {
+            // Replace the products array with new results when doing an initial load
             setProducts(result.products);
           } else {
+            // Append products for pagination
             setProducts((prev) => [...prev, ...result.products]);
           }
           setHasMore(result.products.length === PRODUCTS_PER_PAGE);
@@ -100,6 +103,12 @@ export default function ProductsList({
     setLastVisible(null);
     setProducts([]);
     setError(null);
+
+    // Important: Reset loading state to ensure UI shows loading indicator
+    setLoading(true);
+
+    // Also reset the loading ref to avoid potential race conditions
+    isLoadingRef.current = false;
 
     // Load products with the new filters
     loadProducts(true);
@@ -143,6 +152,11 @@ export default function ProductsList({
 
   // Function to remove category filter
   const handleRemoveCategory = () => {
+    // Reset products state first to ensure clean slate
+    setProducts([]);
+    setLastVisible(null);
+    setHasMore(true);
+
     if (selectedBrand) {
       // If brand filter exists, keep it and remove only category
       router.push(`${pathname}?brand=${encodeURIComponent(selectedBrand)}`);
@@ -154,6 +168,11 @@ export default function ProductsList({
 
   // Function to remove brand filter
   const handleRemoveBrand = () => {
+    // Reset products state first to ensure clean slate
+    setProducts([]);
+    setLastVisible(null);
+    setHasMore(true);
+
     if (selectedCategory) {
       // If category filter exists, keep it and remove only brand
       router.push(
