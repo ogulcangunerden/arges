@@ -218,7 +218,7 @@ export default function ProductsList({
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
       {product.imageUrl ? (
         <div className="h-48 overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -247,7 +247,7 @@ function ProductCard({ product }: { product: Product }) {
         </div>
       )}
 
-      <div className="p-6">
+      <div className="p-6 flex flex-col flex-grow">
         <div className="flex justify-between items-start mb-3">
           <h3 className="text-xl font-semibold truncate">{product.name}</h3>
         </div>
@@ -281,7 +281,7 @@ function ProductCard({ product }: { product: Product }) {
           </div>
         )}
 
-        <div className="mt-auto flex justify-end">
+        <div className="mt-auto flex justify-end pt-4">
           <Link
             href={`/products/${product.id}`}
             className="bg-[#febd00] text-black hover:bg-[#e0a800] px-4 py-2 rounded text-sm font-medium transition-colors duration-300"

@@ -32,11 +32,22 @@ function ProductsContent() {
 
   return (
     <>
-      <div className="mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">Ürünlerimiz</h1>
-        <p className="text-muted-foreground text-lg">
-          Geniş ürün yelpazemizi keşfedin ve ihtiyacınıza uygun çözümleri bulun.
-        </p>
+      <div className="mb-10 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">Ürünlerimiz</h1>
+          <p className="text-muted-foreground text-lg">
+            Geniş ürün yelpazemizi keşfedin ve ihtiyacınıza uygun çözümleri
+            bulun.
+          </p>
+        </div>
+        <div className="hidden md:flex flex-col items-center">
+          <img
+            src="/images/scf.jpeg"
+            alt="scf"
+            className="h-14 object-contain"
+          />
+          <span className="text-sm font-medium mt-1">Yetkili Bayisidir</span>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row gap-8">

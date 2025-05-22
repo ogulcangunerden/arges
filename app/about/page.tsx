@@ -35,12 +35,14 @@ export default function AboutPage() {
       <section className="py-16 md:py-24 bg-white">
         <div className="px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-2xl">
+            <div className="relative overflow-hidden rounded-2xl h-auto">
               <Image
                 src="/images/arges-dukkan.jpeg"
                 alt="Arges Makine Şirket Görünümü"
-                fill
-                className="object-cover"
+                width={1000}
+                height={750}
+                className="object-contain w-full h-auto"
+                priority
               />
             </div>
 

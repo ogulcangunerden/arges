@@ -104,6 +104,23 @@ export function Hero() {
                 </span>
               </div>
             </div>
+
+            {/* SCF Yetkili Bayi Vurgusu */}
+            <div className="mt-6 pt-4 border-t border-border">
+              <div className="flex items-center gap-3">
+                <div className="relative h-12 w-24">
+                  <Image
+                    src="/images/scf.jpeg"
+                    alt="SCF Logo"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <span className="font-medium text-sm text-foreground">
+                  Arges İş Makinaları SCF Yetkili Bayisidir.
+                </span>
+              </div>
+            </div>
           </div>
 
           <div className="flex justify-center lg:justify-end relative z-10">
