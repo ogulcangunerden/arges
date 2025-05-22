@@ -209,6 +209,7 @@ export default function ProductsList({
               <button
                 onClick={handleRemoveCategory}
                 className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full hover:bg-blue-200 transition-colors"
+                aria-label={`Kategori filtresini kaldır: ${selectedCategory}`}
               >
                 Kategori: {selectedCategory}
                 <svg
@@ -217,6 +218,7 @@ export default function ProductsList({
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -231,6 +233,7 @@ export default function ProductsList({
               <button
                 onClick={handleRemoveBrand}
                 className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full hover:bg-blue-200 transition-colors"
+                aria-label={`Marka filtresini kaldır: ${selectedBrand}`}
               >
                 Marka: {selectedBrand}
                 <svg
@@ -239,6 +242,7 @@ export default function ProductsList({
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -256,37 +260,37 @@ export default function ProductsList({
         </div>
       )}
 
-      {products.length === 0 ? (
-        <div className="text-center py-20">
-          <div className="text-yellow-500 mb-2">
+      {/* No products message */}
+      {products.length === 0 && (
+        <div className="text-center py-20 bg-gray-50 rounded-lg">
+          <div className="text-gray-500 mb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-12 w-12 mx-auto"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
           </div>
-          <h3 className="text-xl font-semibold mb-2">
-            {selectedCategory || selectedBrand
-              ? "Seçilen filtrelerle ürün bulunamadı"
-              : "Henüz ürün yok"}
-          </h3>
-          <p className="text-gray-500">
-            {selectedCategory || selectedBrand
-              ? "Lütfen farklı filtreler deneyin."
-              : "Yakında ürünlerimiz eklenecektir."}
+          <h3 className="text-xl font-semibold mb-2">Ürün Bulunamadı</h3>
+          <p className="text-gray-500 max-w-md mx-auto">
+            Aradığınız kriterlere uygun ürün bulunamadı. Lütfen filtrelerinizi
+            değiştirin veya tüm ürünleri görüntüleyin.
           </p>
         </div>
-      ) : (
-        <div>
+      )}
+
+      {/* Products grid */}
+      {products.length > 0 && (
+        <section aria-label="Ürün Listesi">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -309,7 +313,7 @@ export default function ProductsList({
               </div>
             )}
           </div>
-        </div>
+        </section>
       )}
     </div>
   );
@@ -340,11 +344,11 @@ function ProductCard({ product }: { product: Product }) {
 
       <div className="p-4 flex flex-col flex-grow">
         <div className="mb-2">
-          <span className="inline-block text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+          <span className="inline-block text-xs font-medium text-[#febd00] bg-black px-2 py-1 rounded-full">
             {product.category || "Genel"}
           </span>
           {product.brand && (
-            <span className="inline-block ml-2 text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
+            <span className="inline-block ml-2 text-xs font-medium text-[#febd00] bg-black px-2 py-1 rounded-full">
               {product.brand}
             </span>
           )}

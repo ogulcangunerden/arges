@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductById } from "@/lib/firebase/products";
 import { FirebaseError } from "firebase/app";
+import Script from "next/script";
 
 // Generate metadata for the page
 export async function generateMetadata({
@@ -22,8 +23,32 @@ export async function generateMetadata({
     }
 
     return {
-      title: `${product.name} | Arges Makine`,
-      description: product.description,
+      title: `${product.name} | İş Makinesi Yedek Parça | Arges Makine`,
+      description:
+        product.description ||
+        `${product.name} - Arges Makine'de en uygun fiyatlarla. İş makineniz için kaliteli yedek parçalar.`,
+      keywords: `${product.name}, ${product.category}, ${
+        product.brand || ""
+      }, iş makinesi yedek parça, hidrolik pompa, yedek parça`,
+      alternates: {
+        canonical: `/products/${productId}`,
+      },
+      openGraph: {
+        title: `${product.name} | İş Makinesi Yedek Parça`,
+        description:
+          product.description ||
+          `${product.name} - Arges Makine'de en uygun fiyatlarla.`,
+        url: `https://argesmakine.com/products/${productId}`,
+        type: "website",
+        images: [
+          {
+            url: product.imageUrl || "/logo.svg",
+            width: 800,
+            height: 600,
+            alt: product.name,
+          },
+        ],
+      },
     };
   } catch {
     return {
@@ -45,8 +70,41 @@ export default async function ProductDetailPage({
       notFound();
     }
 
+    // Create JSON-LD structured data for the product
+    const productJsonLd = {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      name: product.name,
+      description: product.description,
+      image: product.imageUrl || "https://argesmakine.com/logo.svg",
+      category: product.category,
+      brand: {
+        "@type": "Brand",
+        name: product.brand || "Arges Makine",
+      },
+      manufacturer: {
+        "@type": "Organization",
+        name: "Arges Makine",
+      },
+      offers: {
+        "@type": "Offer",
+        availability: "https://schema.org/InStock",
+        seller: {
+          "@type": "Organization",
+          name: "Arges Makine",
+          url: "https://argesmakine.com",
+        },
+      },
+    };
+
     return (
       <main className="container mx-auto px-4 py-12 max-w-7xl">
+        <Script
+          id={`product-jsonld-${productId}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        />
+
         <div className="mb-8">
           <Link
             href="/products"

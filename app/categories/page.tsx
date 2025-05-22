@@ -2,18 +2,56 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { getCategories } from "@/lib/firebase/categories";
+import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "Kategoriler | Arges Makine",
+  title: "İş Makineleri Yedek Parça Kategorileri | Arges Makine",
   description:
-    "Arges Makine kategorileri - iş makineleri için kaliteli yedek parçalar",
+    "Hidrolik pompalar, filtreler, motor parçaları ve daha fazlası. Tüm iş makineleri yedek parça kategorilerimizi keşfedin.",
+  keywords:
+    "iş makinesi kategoriler, hidrolik parçalar, filtreleme sistemleri, motor parçaları, şanzıman parçaları",
+  alternates: {
+    canonical: "/categories",
+  },
+  openGraph: {
+    title: "İş Makineleri Yedek Parça Kategorileri | Arges Makine",
+    description:
+      "Tüm iş makinesi yedek parça kategorilerimizi inceleyin. En kaliteli parçalar Arges Makine güvencesiyle.",
+    url: "https://argesmakine.com/categories",
+    type: "website",
+  },
 };
 
 export default async function CategoriesPage() {
   const categories = await getCategories();
 
+  // Create JSON-LD structured data for categories page
+  const categoriesJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: categories.map((category, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Product",
+        name: category.name,
+        description: category.description,
+        url: `https://argesmakine.com/products?category=${encodeURIComponent(
+          category.name
+        )}`,
+        image: `https://argesmakine.com${category.imageUrl}`,
+      },
+    })),
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
+      <Script
+        id="categories-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(categoriesJsonLd) }}
+      />
+
       <div className="flex flex-col items-center text-center mb-10">
         <h1 className="text-4xl font-bold tracking-tight mb-4">
           Ürün Kategorilerimiz
