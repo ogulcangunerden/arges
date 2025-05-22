@@ -108,6 +108,7 @@ export default function ProductsList({
     return () => {
       isLoadingRef.current = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory, selectedBrand]);
 
   // Setup intersection observer for infinite scroll
