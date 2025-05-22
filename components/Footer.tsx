@@ -191,20 +191,6 @@ export function Footer() {
           <p className="text-xs text-muted-foreground">
             &copy; {year} Arges Makine. Tüm hakları saklıdır.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link
-              href="/privacy"
-              className="text-xs text-muted-foreground hover:text-primary transition-colors"
-            >
-              Gizlilik Politikası
-            </Link>
-            <Link
-              href="/terms"
-              className="text-xs text-muted-foreground hover:text-primary transition-colors"
-            >
-              Kullanım Koşulları
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
