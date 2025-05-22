@@ -327,6 +327,15 @@ function ProductCard({ product }: { product: Product }) {
           priority={false}
           unoptimized={true}
         />
+        {/* Logo watermark overlay */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          <Image
+            src="/arges-yazi.svg"
+            alt="Logo Watermark"
+            fill
+            className="opacity-60"
+          />
+        </div>
       </div>
 
       <div className="p-4 flex flex-col flex-grow">
