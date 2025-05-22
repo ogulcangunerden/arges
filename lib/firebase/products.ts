@@ -118,14 +118,16 @@ export const getFilteredProducts = async (
   try {
     const constraints: QueryConstraint[] = [];
 
-    if (categoryName) {
+    // Only add filters if they are defined and not empty strings
+    if (categoryName && categoryName.trim() !== "") {
       constraints.push(where("category", "==", categoryName));
     }
 
-    if (brandName) {
+    if (brandName && brandName.trim() !== "") {
       constraints.push(where("brand", "==", brandName));
     }
 
+    // Always add these constraints
     constraints.push(orderBy("createdAt", "desc"));
     constraints.push(limit(pageSize));
 
@@ -135,6 +137,11 @@ export const getFilteredProducts = async (
 
     const q = query(collection(db, COLLECTION_NAME), ...constraints);
     const querySnapshot = await getDocs(q);
+
+    // Handle the case where the query returned no documents
+    if (querySnapshot.empty) {
+      return { products: [], lastVisible: null };
+    }
 
     const products = querySnapshot.docs.map(convertFirestoreDocToProduct);
 

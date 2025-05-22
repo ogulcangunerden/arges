@@ -27,15 +27,23 @@ export default function ProductsList({
   const [lastVisible, setLastVisible] = useState<DocumentSnapshot | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
+  // Track if an initial load is in progress to prevent duplicate calls
+  const isLoadingRef = useRef<boolean>(false);
 
   const router = useRouter();
   const pathname = usePathname();
 
   const loadProducts = useCallback(
     async (isInitial: boolean = false) => {
+      // Prevent duplicate loading calls
+      if ((isInitial && isLoadingRef.current) || (!isInitial && loadingMore)) {
+        return;
+      }
+
       try {
         if (isInitial) {
           setLoading(true);
+          isLoadingRef.current = true;
         } else {
           setLoadingMore(true);
         }
@@ -76,21 +84,31 @@ export default function ProductsList({
       } finally {
         if (isInitial) {
           setLoading(false);
+          isLoadingRef.current = false;
         } else {
           setLoadingMore(false);
         }
       }
     },
-    [selectedCategory, selectedBrand, lastVisible]
+    [selectedCategory, selectedBrand, lastVisible, loadingMore]
   );
 
   // Initial load of products
   useEffect(() => {
+    // Reset state for new filter selections
     setHasMore(true);
     setLastVisible(null);
     setProducts([]);
+    setError(null);
+
+    // Load products with the new filters
     loadProducts(true);
-  }, [selectedCategory, selectedBrand, loadProducts]);
+
+    // Cleanup function
+    return () => {
+      isLoadingRef.current = false;
+    };
+  }, [selectedCategory, selectedBrand]);
 
   // Setup intersection observer for infinite scroll
   useEffect(() => {
@@ -99,7 +117,12 @@ export default function ProductsList({
     if (observer.current) observer.current.disconnect();
 
     const callback = (entries: IntersectionObserverEntry[]) => {
-      if (entries[0].isIntersecting && hasMore && !loadingMore) {
+      if (
+        entries[0].isIntersecting &&
+        hasMore &&
+        !loadingMore &&
+        !isLoadingRef.current
+      ) {
         loadProducts();
       }
     };

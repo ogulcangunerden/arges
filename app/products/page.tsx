@@ -27,9 +27,15 @@ function ProductsContent() {
 
   // Update state when URL params change
   useEffect(() => {
-    setSelectedCategory(decodedCategory);
-    setSelectedBrand(decodedBrand);
-  }, [decodedCategory, decodedBrand]);
+    // Only update state if the values actually changed to prevent re-renders
+    if (selectedCategory !== decodedCategory) {
+      setSelectedCategory(decodedCategory);
+    }
+
+    if (selectedBrand !== decodedBrand) {
+      setSelectedBrand(decodedBrand);
+    }
+  }, [decodedCategory, decodedBrand, selectedCategory, selectedBrand]);
 
   return (
     <>
