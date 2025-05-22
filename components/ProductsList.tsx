@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { getProducts, getFilteredProducts } from "@/lib/firebase/products";
 import { Product } from "@/types/product";
 import { useRouter, usePathname } from "next/navigation";
@@ -222,18 +223,19 @@ function ProductCard({ product }: { product: Product }) {
       {product.imageUrl ? (
         <div className="h-48 overflow-hidden relative">
           {/* Product image */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={product.imageUrl}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
           {/* Logo watermark overlay */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-            <img
+            <Image
               src="/arges-yazi.svg"
               alt="Logo Watermark"
-              className="w-full h-full opacity-60"
+              fill
+              className="opacity-60"
             />
           </div>
         </div>

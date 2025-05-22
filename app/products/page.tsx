@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState, useEffect } from "react";
+import Image from "next/image";
 import ProductsList from "@/components/ProductsList";
 import ProductFilterSidebar from "@/components/ProductFilterSidebar";
 import { useSearchParams } from "next/navigation";
@@ -41,9 +42,11 @@ function ProductsContent() {
           </p>
         </div>
         <div className="hidden md:flex flex-col items-center">
-          <img
+          <Image
             src="/images/scf.jpeg"
             alt="scf"
+            width={80}
+            height={56}
             className="h-14 object-contain"
           />
           <span className="text-sm font-medium mt-1">Yetkili Bayisidir</span>

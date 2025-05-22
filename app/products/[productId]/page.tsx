@@ -85,10 +85,11 @@ export default async function ProductDetailPage({
                 />
                 {/* Logo watermark overlay */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                  <img
+                  <Image
                     src="/arges-yazi.svg"
                     alt="Logo Watermark"
-                    className="w-full h-full opacity-60"
+                    fill
+                    className="opacity-60"
                   />
                 </div>
               </div>

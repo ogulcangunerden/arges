@@ -26,10 +26,11 @@ export function ProductCard({
             className="object-cover transition-transform group-hover:scale-105 duration-300"
           />
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-            <img
+            <Image
               src="/arges-yazi.svg"
               alt="Logo Watermark"
-              className="w-full h-full opacity-60"
+              fill
+              className="opacity-60"
             />
           </div>
         </div>
