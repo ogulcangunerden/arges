@@ -16,7 +16,7 @@ import { getCategories } from "@/lib/firebase/categories";
 import { getBrands } from "@/lib/firebase/brands";
 import { Category } from "@/types/category";
 import { Brand } from "@/types/brand";
-
+//
 type SubItem = {
   name: string;
   href: string;

@@ -19,7 +19,6 @@ export default function ProductsList({
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [debug, setDebug] = useState<string>("");
 
   const router = useRouter();
   const pathname = usePathname();
@@ -28,30 +27,22 @@ export default function ProductsList({
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        // Log the filters being applied
-        console.log("Filtering with category:", selectedCategory);
-        console.log("Filtering with brand:", selectedBrand);
-
-        setDebug(
-          `Aranan kategori: "${selectedCategory}", Aranan marka: "${selectedBrand}"`
-        );
-
         // Use the filtered function if either filter is applied
         if (selectedCategory || selectedBrand) {
           const data = await getFilteredProducts(
             selectedCategory,
             selectedBrand
           );
-          console.log(`Found ${data.length} products with filters`);
           setProducts(data);
         } else {
           // Otherwise, fetch all products
           const data = await getProducts();
-          console.log(`Found ${data.length} total products`);
           setProducts(data);
         }
       } catch (err) {
-        console.error("Error fetching products:", err);
+        if (process.env.NODE_ENV !== "production") {
+          console.error("Error fetching products:", err);
+        }
         setError("Ürünler yüklenirken bir hata oluştu.");
       } finally {
         setLoading(false);
@@ -204,7 +195,6 @@ export default function ProductsList({
               ? "Lütfen farklı filtreler deneyin."
               : "Yakında ürünlerimiz eklenecektir."}
           </p>
-          {debug && <p className="text-xs text-gray-400 mt-4">{debug}</p>}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -258,48 +248,44 @@ function ProductCard({ product }: { product: Product }) {
         </div>
       )}
 
-      <div className="p-6 flex flex-col flex-grow">
-        <div className="flex justify-between items-start mb-3">
-          <h3 className="text-xl font-semibold truncate">{product.name}</h3>
-        </div>
-
-        <div className="mb-3">
-          <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full mb-2">
-            {product.category}
+      <div className="p-4 flex flex-col flex-grow">
+        <div className="mb-2">
+          <span className="inline-block text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+            {product.category || "Genel"}
           </span>
           {product.brand && (
-            <div className="text-sm text-gray-500 mt-1">
-              <span className="font-medium">Marka:</span> {product.brand}
-            </div>
+            <span className="inline-block ml-2 text-xs font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
+              {product.brand}
+            </span>
           )}
         </div>
 
-        <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
+        <h3 className="text-lg font-bold mb-2 text-gray-800">{product.name}</h3>
 
-        {product.features && product.features.length > 0 && (
-          <div className="mb-4">
-            <h4 className="text-sm font-semibold mb-2">Özellikler:</h4>
-            <ul className="text-sm text-gray-600 list-disc pl-5">
-              {product.features.slice(0, 2).map((feature, index) => (
-                <li key={index} className="line-clamp-1">
-                  {feature}
-                </li>
-              ))}
-              {product.features.length > 2 && (
-                <li className="text-blue-600">+ daha fazla</li>
-              )}
-            </ul>
-          </div>
-        )}
+        <p className="text-sm text-gray-500 mb-4 line-clamp-3 flex-grow">
+          {product.description}
+        </p>
 
-        <div className="mt-auto flex justify-end pt-4">
-          <Link
-            href={`/products/${product.id}`}
-            className="bg-[#febd00] text-black hover:bg-[#e0a800] px-4 py-2 rounded text-sm font-medium transition-colors duration-300"
+        <Link
+          href={`/products/${product.id}`}
+          className="mt-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#febd00] hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+        >
+          Detayları Gör
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 ml-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            Detaylar
-          </Link>
-        </div>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            />
+          </svg>
+        </Link>
       </div>
     </div>
   );

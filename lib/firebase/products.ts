@@ -44,7 +44,9 @@ export const getProducts = async (): Promise<Product[]> => {
 
     return querySnapshot.docs.map(convertFirestoreDocToProduct);
   } catch (error) {
-    console.error("Error getting products:", error);
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Error getting products:", error);
+    }
     throw error;
   }
 };
@@ -63,7 +65,9 @@ export const getProductsByCategory = async (
 
     return querySnapshot.docs.map(convertFirestoreDocToProduct);
   } catch (error) {
-    console.error("Error getting products by category:", error);
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Error getting products by category:", error);
+    }
     throw error;
   }
 };
@@ -74,9 +78,6 @@ export const getFilteredProducts = async (
   brandName?: string
 ): Promise<Product[]> => {
   try {
-    console.log("Filtering products with categoryName:", categoryName);
-    console.log("Filtering products with brandName:", brandName);
-
     const constraints: QueryConstraint[] = [];
 
     if (categoryName) {
@@ -90,26 +91,14 @@ export const getFilteredProducts = async (
     constraints.push(orderBy("createdAt", "desc"));
 
     const q = query(collection(db, COLLECTION_NAME), ...constraints);
-    console.log("Query constraints:", constraints);
-
     const querySnapshot = await getDocs(q);
     const products = querySnapshot.docs.map(convertFirestoreDocToProduct);
 
-    console.log(`Found ${products.length} products matching filters`);
-    if (products.length > 0) {
-      console.log(
-        "Sample product categories:",
-        products.slice(0, 3).map((p) => p.category)
-      );
-      console.log(
-        "Sample product brands:",
-        products.slice(0, 3).map((p) => p.brand)
-      );
-    }
-
     return products;
   } catch (error) {
-    console.error("Error getting filtered products:", error);
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Error getting filtered products:", error);
+    }
     throw error;
   }
 };
@@ -128,7 +117,9 @@ export const getProductById = async (
       return null;
     }
   } catch (error) {
-    console.error("Error getting product:", error);
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Error getting product:", error);
+    }
     throw error;
   }
 };
