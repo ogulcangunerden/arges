@@ -6,5 +6,5 @@
     .medium { font-size: 16px; }
   </style>
   <text x="10" y="30" class="text large" fill="#0f0f0f">ARGES</text>
-  <text x="10" y="48" class="text medium" fill="#febd00">İŞ MAKİNELERİ</text>
+  <text x="10" y="48" class="text medium" fill="#febd00">İŞ MAKİNALARI</text>
 </svg> 

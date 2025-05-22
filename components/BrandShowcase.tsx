@@ -6,7 +6,8 @@ import { Brand } from "@/types/brand";
 async function fetchBrands(): Promise<Brand[]> {
   try {
     const brands = await getBrands();
-    return brands;
+    // Only show the first 10 brands in the showcase
+    return brands.slice(0, 10);
   } catch (error) {
     console.error("Error fetching brands:", error);
     return [];
@@ -33,7 +34,7 @@ export async function BrandShowcase() {
           {brands.map((brand) => (
             <Link
               key={brand.id}
-              href={`/products?brand=${brand.id}`}
+              href={`/products?brand=${encodeURIComponent(brand.name)}`}
               className="group flex flex-col items-center justify-center p-4 bg-white rounded-lg border border-border hover:shadow-md transition-all"
             >
               <div className="h-24 w-full relative flex items-center justify-center mb-3 bg-gray-100 rounded-md overflow-hidden">

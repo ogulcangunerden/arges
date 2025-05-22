@@ -6,8 +6,8 @@ import { Category } from "@/types/category";
 async function fetchCategories(): Promise<Category[]> {
   try {
     const allCategories = await getCategories();
-    // Only show the first 4 categories in the featured section
-    return allCategories.slice(0, 4);
+    // Only show the first 8 categories in the featured section
+    return allCategories.slice(0, 8);
   } catch (error) {
     console.error("Error fetching categories:", error);
     return [];
@@ -18,7 +18,7 @@ export async function FeaturedCategories() {
   const featuredCategories = await fetchCategories();
 
   return (
-    <section className="py-16 bg-background">
+    <section className="py-16 bg-zinc-50">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight mb-4">
@@ -31,14 +31,14 @@ export async function FeaturedCategories() {
         </div>
 
         {featuredCategories.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
             {featuredCategories.map((category) => (
               <Link
                 key={category.id}
-                href={`/products?category=${category.id}`}
-                className="group relative rounded-xl overflow-hidden bg-card border border-border transition-all hover:shadow-md"
+                href={`/products?category=${encodeURIComponent(category.name)}`}
+                className="group flex flex-col bg-white rounded-lg border border-border hover:shadow-md transition-all overflow-hidden"
               >
-                <div className="aspect-square relative">
+                <div className="h-48 w-full relative flex items-center justify-center bg-gray-100 overflow-hidden">
                   <Image
                     src={category.imageUrl}
                     alt={category.name}
@@ -46,13 +46,12 @@ export async function FeaturedCategories() {
                     className="object-cover transition-transform group-hover:scale-105 duration-300"
                     unoptimized={true}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 </div>
-                <div className="absolute bottom-0 w-full p-4 text-white">
+                <div className="p-4">
                   <h3 className="font-semibold text-lg mb-1">
                     {category.name}
                   </h3>
-                  <p className="text-sm text-zinc-200 opacity-90">
+                  <p className="text-sm text-muted-foreground">
                     {category.description}
                   </p>
                 </div>

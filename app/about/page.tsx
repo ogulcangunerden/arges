@@ -37,7 +37,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-video lg:aspect-square overflow-hidden rounded-2xl">
               <Image
-                src="/about-company.jpg"
+                src="/images/arges-dukkan.jpeg"
                 alt="Arges Makine Şirket Görünümü"
                 fill
                 className="object-cover"

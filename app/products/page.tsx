@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import ProductsList from "@/components/ProductsList";
 import ProductFilterSidebar from "@/components/ProductFilterSidebar";
 import { useSearchParams } from "next/navigation";
@@ -23,6 +23,12 @@ function ProductsContent() {
   const [selectedBrand, setSelectedBrand] = useState<string | undefined>(
     decodedBrand
   );
+
+  // Update state when URL params change
+  useEffect(() => {
+    setSelectedCategory(decodedCategory);
+    setSelectedBrand(decodedBrand);
+  }, [decodedCategory, decodedBrand]);
 
   return (
     <>
