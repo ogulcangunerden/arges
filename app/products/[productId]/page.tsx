@@ -83,6 +83,14 @@ export default async function ProductDetailPage({
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
                 />
+                {/* Logo watermark overlay */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+                  <img
+                    src="/arges-yazi.svg"
+                    alt="Logo Watermark"
+                    className="w-full h-full opacity-60"
+                  />
+                </div>
               </div>
             ) : (
               <div className="aspect-square bg-gray-50 rounded-lg flex items-center justify-center border border-gray-200">

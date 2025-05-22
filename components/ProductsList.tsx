@@ -220,13 +220,22 @@ function ProductCard({ product }: { product: Product }) {
   return (
     <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
       {product.imageUrl ? (
-        <div className="h-48 overflow-hidden">
+        <div className="h-48 overflow-hidden relative">
+          {/* Product image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={product.imageUrl}
             alt={product.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
+          {/* Logo watermark overlay */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+            <img
+              src="/arges-yazi.svg"
+              alt="Logo Watermark"
+              className="w-full h-full opacity-60"
+            />
+          </div>
         </div>
       ) : (
         <div className="h-48 bg-gray-100 flex items-center justify-center">
