@@ -345,14 +345,7 @@ function ProductCard({ product }: { product: Product }) {
         </div>
 
         <h3 className="text-lg font-bold mb-2 text-gray-800" itemProp="name">
-          {product.degisenNo ? (
-            <>
-              {product.name}{" "}
-              <span className="text-[#febd00]">({product.degisenNo})</span>
-            </>
-          ) : (
-            product.name
-          )}
+          {product.degisenNo ? <>{product.name} </> : product.name}
         </h3>
 
         <p
