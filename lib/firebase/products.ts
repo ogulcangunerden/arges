@@ -30,6 +30,7 @@ export const convertFirestoreDocToProduct = (
     price: data?.price,
     imageUrl: data?.imageUrl,
     features: data?.features || [],
+    degisenNo: data?.degisenNo,
     createdAt: data?.createdAt?.toDate(),
     updatedAt: data?.updatedAt?.toDate(),
   };

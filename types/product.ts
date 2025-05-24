@@ -7,6 +7,7 @@ export interface Product {
   price?: number;
   imageUrl?: string;
   features?: string[];
+  degisenNo?: string;
   createdAt: Date;
   updatedAt: Date;
 }

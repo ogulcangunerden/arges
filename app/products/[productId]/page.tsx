@@ -201,6 +201,18 @@ export default async function ProductDetailPage({
               </div>
             )}
 
+            {product.degisenNo && (
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h2 className="text-lg font-semibold mb-2 text-gray-800 flex items-center">
+                  <span className="w-1.5 h-5 bg-[#febd00] rounded-full mr-2 inline-block"></span>
+                  Değişen No
+                </h2>
+                <p className="text-gray-700 whitespace-pre-line pl-4">
+                  {product.degisenNo}
+                </p>
+              </div>
+            )}
+
             <div className="bg-gray-50 p-4 rounded-lg">
               <h2 className="text-lg font-semibold mb-2 text-gray-800 flex items-center">
                 <span className="w-1.5 h-5 bg-[#febd00] rounded-full mr-2 inline-block"></span>

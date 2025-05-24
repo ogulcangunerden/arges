@@ -338,11 +338,17 @@ function ProductCard({ product }: { product: Product }) {
         </h3>
 
         <p
-          className="text-sm text-gray-500 mb-4 line-clamp-3 flex-grow"
+          className="text-sm text-gray-500 mb-2 line-clamp-3"
           itemProp="description"
         >
           {product.description}
         </p>
+
+        {product.degisenNo && (
+          <p className="text-sm text-gray-500 mb-4 flex-grow">
+            <span className="font-medium">Değişen No:</span> {product.degisenNo}
+          </p>
+        )}
 
         <Link
           href={`/products/${product.id}`}
