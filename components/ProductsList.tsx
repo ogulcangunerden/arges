@@ -284,10 +284,17 @@ export default function ProductsList({
 }
 
 function ProductCard({ product }: { product: Product }) {
-  // Create a rich SEO-friendly alt text
-  const altText = `${product.name} - ${product.brand || ""} ${
+  // Create a rich SEO-friendly alt text that includes product name and part number
+  const altText = `${product.name}${
+    product.degisenNo ? ` - ${product.degisenNo}` : ""
+  } - ${product.brand || ""} ${
     product.category || ""
   } yedek parça - Arges Makine`;
+
+  // Create a title attribute that includes product name and part number
+  const titleText = `${product.name}${
+    product.degisenNo ? ` (${product.degisenNo})` : ""
+  } - ${product.category || "Yedek Parça"} - Arges Makine`;
 
   return (
     <div
@@ -299,6 +306,7 @@ function ProductCard({ product }: { product: Product }) {
         <Image
           src={product.imageUrl || "/images/placeholder.png"}
           alt={altText}
+          title={titleText}
           fill
           className="object-cover transition-all group-hover:scale-105 duration-300"
           priority={false}
@@ -327,14 +335,24 @@ function ProductCard({ product }: { product: Product }) {
             <span
               className="inline-block ml-2 text-xs font-medium text-[#febd00] bg-black px-2 py-1 rounded-full"
               itemProp="brand"
+              itemScope
+              itemType="https://schema.org/Brand"
             >
+              <meta itemProp="name" content={product.brand} />
               {product.brand}
             </span>
           )}
         </div>
 
         <h3 className="text-lg font-bold mb-2 text-gray-800" itemProp="name">
-          {product.name}
+          {product.degisenNo ? (
+            <>
+              {product.name}{" "}
+              <span className="text-[#febd00]">({product.degisenNo})</span>
+            </>
+          ) : (
+            product.name
+          )}
         </h3>
 
         <p
@@ -346,16 +364,17 @@ function ProductCard({ product }: { product: Product }) {
 
         {product.degisenNo && (
           <p className="text-sm text-gray-500 mb-4 flex-grow">
-            <span className="font-medium">Değişen No:</span> {product.degisenNo}
+            <span className="font-medium">Değişen No:</span>{" "}
+            <span itemProp="sku">{product.degisenNo}</span>
+            <meta itemProp="mpn" content={product.degisenNo} />
           </p>
         )}
 
         <Link
           href={`/products/${product.id}`}
           className="mt-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#febd00] hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-          title={`${product.name} detaylarına bakın - ${
-            product.category || ""
-          } ${product.brand || ""}`}
+          title={titleText}
+          itemProp="url"
         >
           Detayları Gör
           <svg
@@ -374,6 +393,23 @@ function ProductCard({ product }: { product: Product }) {
             />
           </svg>
         </Link>
+
+        {/* Add hidden structured data elements for SEO */}
+        <div style={{ display: "none" }}>
+          <span itemProp="offers" itemScope itemType="https://schema.org/Offer">
+            <meta
+              itemProp="availability"
+              content="https://schema.org/InStock"
+            />
+            <span
+              itemProp="seller"
+              itemScope
+              itemType="https://schema.org/Organization"
+            >
+              <meta itemProp="name" content="Arges Makine" />
+            </span>
+          </span>
+        </div>
       </div>
     </div>
   );

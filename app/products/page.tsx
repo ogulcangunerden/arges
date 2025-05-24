@@ -5,6 +5,7 @@ import Image from "next/image";
 import ProductsList from "@/components/ProductsList";
 import ProductFilterSidebar from "@/components/ProductFilterSidebar";
 import { useSearchParams } from "next/navigation";
+import Script from "next/script";
 
 // Separate component for handling search params
 function ProductsContent() {
@@ -79,8 +80,57 @@ function ProductsContent() {
 }
 
 export default function ProductsPage() {
+  // JSON-LD structured data for product list page
+  const productsListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "İş Makinesi Yedek Parçaları",
+        url: "https://argesmakine.com/products",
+      },
+    ],
+    numberOfItems: 1,
+  };
+
+  // BreadcrumbList JSON-LD for better navigation SEO
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Ana Sayfa",
+        item: "https://argesmakine.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Ürünler",
+        item: "https://argesmakine.com/products",
+      },
+    ],
+  };
+
   return (
     <main className="container mx-auto px-4 py-12">
+      {/* Structured data for products page */}
+      <Script
+        id="products-list-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productsListJsonLd) }}
+      />
+
+      {/* Breadcrumb structured data */}
+      <Script
+        id="breadcrumb-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       <Suspense fallback={<PageLoadingSkeleton />}>
         <ProductsContent />
       </Suspense>

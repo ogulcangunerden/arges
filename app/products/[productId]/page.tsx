@@ -22,22 +22,52 @@ export async function generateMetadata({
       };
     }
 
+    // Improved title with part number if available
+    const pageTitle = product.degisenNo
+      ? `${product.name} (${product.degisenNo}) | İş Makinesi Yedek Parça | Arges Makine`
+      : `${product.name} | İş Makinesi Yedek Parça | Arges Makine`;
+
+    // Enhanced description with more detailed information
+    const pageDescription = product.description
+      ? `${product.name}${
+          product.degisenNo ? ` (${product.degisenNo})` : ""
+        } - ${product.description}. ${
+          product.brand ? product.brand + " marka" : ""
+        } ${
+          product.category
+        } için orijinal kalitede yedek parça Arges Makine'de.`
+      : `${product.name}${
+          product.degisenNo ? ` (${product.degisenNo})` : ""
+        } - ${product.brand ? product.brand + " marka" : ""} ${
+          product.category
+        } için en uygun fiyatlarla. İş makineniz için kaliteli yedek parçalar Arges Makine güvencesiyle.`;
+
+    // Enhanced keywords with part number
+    const keywordsList = [
+      product.name,
+      product.degisenNo,
+      `${product.name} yedek parça`,
+      product.degisenNo ? `${product.degisenNo} yedek parça` : "",
+      product.category,
+      product.brand || "",
+      "iş makinesi yedek parça",
+      "hidrolik pompa",
+      "yedek parça",
+      product.brand ? `${product.brand} yedek parça` : "",
+    ]
+      .filter(Boolean)
+      .join(", ");
+
     return {
-      title: `${product.name} | İş Makinesi Yedek Parça | Arges Makine`,
-      description:
-        product.description ||
-        `${product.name} - Arges Makine'de en uygun fiyatlarla. İş makineniz için kaliteli yedek parçalar.`,
-      keywords: `${product.name}, ${product.category}, ${
-        product.brand || ""
-      }, iş makinesi yedek parça, hidrolik pompa, yedek parça`,
+      title: pageTitle,
+      description: pageDescription,
+      keywords: keywordsList,
       alternates: {
         canonical: `/products/${productId}`,
       },
       openGraph: {
-        title: `${product.name} | İş Makinesi Yedek Parça`,
-        description:
-          product.description ||
-          `${product.name} - Arges Makine'de en uygun fiyatlarla.`,
+        title: pageTitle,
+        description: pageDescription,
         url: `https://argesmakine.com/products/${productId}`,
         type: "website",
         images: [
@@ -70,11 +100,13 @@ export default async function ProductDetailPage({
       notFound();
     }
 
-    // Create JSON-LD structured data for the product
+    // Enhanced JSON-LD structured data for the product
     const productJsonLd = {
       "@context": "https://schema.org/",
       "@type": "Product",
-      name: product.name,
+      name: product.degisenNo
+        ? `${product.name} (${product.degisenNo})`
+        : product.name,
       description: product.description,
       image: product.imageUrl || "https://argesmakine.com/logo.svg",
       category: product.category,
@@ -86,6 +118,15 @@ export default async function ProductDetailPage({
         "@type": "Organization",
         name: "Arges Makine",
       },
+      sku: product.degisenNo || productId,
+      mpn: product.degisenNo,
+      identifier: [
+        {
+          "@type": "PropertyValue",
+          propertyID: "degisenNo",
+          value: product.degisenNo,
+        },
+      ],
       offers: {
         "@type": "Offer",
         availability: "https://schema.org/InStock",
@@ -103,6 +144,40 @@ export default async function ProductDetailPage({
           id={`product-jsonld-${productId}`}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        />
+
+        {/* Add BreadcrumbList structured data for better navigation SEO */}
+        <Script
+          id={`breadcrumb-jsonld-${productId}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Ana Sayfa",
+                  item: "https://argesmakine.com",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Ürünler",
+                  item: "https://argesmakine.com/products",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: product.degisenNo
+                    ? `${product.name} (${product.degisenNo})`
+                    : product.name,
+                  item: `https://argesmakine.com/products/${productId}`,
+                },
+              ],
+            }),
+          }}
         />
 
         <div className="mb-8">
@@ -135,7 +210,11 @@ export default async function ProductDetailPage({
               <div className="relative aspect-square rounded-lg overflow-hidden">
                 <Image
                   src={product.imageUrl}
-                  alt={product.name}
+                  alt={
+                    product.degisenNo
+                      ? `${product.name} (${product.degisenNo})`
+                      : product.name
+                  }
                   fill
                   className="object-contain transform transition-transform duration-500 hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -175,7 +254,16 @@ export default async function ProductDetailPage({
           <div className="space-y-8">
             <div className="border-b border-gray-200 pb-4">
               <h1 className="text-3xl font-bold mb-2 text-gray-800">
-                {product.name}
+                {product.degisenNo ? (
+                  <>
+                    {product.name}{" "}
+                    <span className="text-[#febd00]">
+                      ({product.degisenNo})
+                    </span>
+                  </>
+                ) : (
+                  product.name
+                )}
               </h1>
             </div>
 
