@@ -68,7 +68,7 @@ export async function generateMetadata({
       openGraph: {
         title: pageTitle,
         description: pageDescription,
-        url: `https://argesmakine.com/products/${productId}`,
+        url: `https://argesismakinalari.com/products/${productId}`,
         type: "website",
         images: [
           {
@@ -108,7 +108,7 @@ export default async function ProductDetailPage({
         ? `${product.name} (${product.degisenNo})`
         : product.name,
       description: product.description,
-      image: product.imageUrl || "https://argesmakine.com/logo.svg",
+      image: product.imageUrl || "https://argesismakinalari.com/logo.svg",
       category: product.category,
       brand: {
         "@type": "Brand",
@@ -133,7 +133,7 @@ export default async function ProductDetailPage({
         seller: {
           "@type": "Organization",
           name: "Arges Makine",
-          url: "https://argesmakine.com",
+          url: "https://argesismakinalari.com",
         },
       },
     };
@@ -159,13 +159,13 @@ export default async function ProductDetailPage({
                   "@type": "ListItem",
                   position: 1,
                   name: "Ana Sayfa",
-                  item: "https://argesmakine.com",
+                  item: "https://argesismakinalari.com",
                 },
                 {
                   "@type": "ListItem",
                   position: 2,
                   name: "Ürünler",
-                  item: "https://argesmakine.com/products",
+                  item: "https://argesismakinalari.com/products",
                 },
                 {
                   "@type": "ListItem",
@@ -173,7 +173,7 @@ export default async function ProductDetailPage({
                   name: product.degisenNo
                     ? `${product.name} (${product.degisenNo})`
                     : product.name,
-                  item: `https://argesmakine.com/products/${productId}`,
+                  item: `https://argesismakinalari.com/products/${productId}`,
                 },
               ],
             }),

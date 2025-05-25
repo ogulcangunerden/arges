@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "Arges Makine",
-      url: "https://argesmakine.com",
+      url: "https://argesismakinalari.com",
     },
   ],
   creator: "Arges Makine",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://argesmakine.com"),
+  metadataBase: new URL("https://argesismakinalari.com"),
   alternates: {
     canonical: "/",
   },
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     title: "Arges Makine | İş Makineleri Yedek Parça",
     description:
       "En kaliteli iş makinaları yedek parçaları için Arges Makina. Hidrolik pompa, filtreler ve tüm markalar için parçalar.",
-    url: "https://argesmakine.com",
+    url: "https://argesismakinalari.com",
     siteName: "Arges Makine",
     locale: "tr_TR",
     type: "website",
@@ -83,8 +83,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Arges Makine",
-              url: "https://argesmakine.com",
-              logo: "https://argesmakine.com/logo.svg",
+              url: "https://argesismakinalari.com",
+              logo: "https://argesismakinalari.com/logo.svg",
               description:
                 "İş makineleri için en kaliteli yedek parçalar, hidrolik pompa, filtreler ve tüm makineler için parçalar.",
               contactPoint: {

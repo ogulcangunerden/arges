@@ -14,7 +14,7 @@ export default function Home() {
     name: "Arges Makina - İş Makinaları Yedek Parça",
     description:
       "İş makineleri için en kaliteli yedek parçalar, hidrolik pompa, filtreler ve tüm parçalar uygun fiyatlarla.",
-    url: "https://argesmakine.com",
+    url: "https://argesismakinalari.com",
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["h1", "h2", ".about-section"],
@@ -26,19 +26,19 @@ export default function Home() {
           "@type": "ListItem",
           position: 1,
           name: "İş Makinesi Yedek Parçaları",
-          url: "https://argesmakine.com/products",
+          url: "https://argesismakinalari.com/products",
         },
         {
           "@type": "ListItem",
           position: 2,
           name: "Hidrolik Pompalar ve Sistemler",
-          url: "https://argesmakine.com/categories/hidrolik",
+          url: "https://argesismakinalari.com/categories/hidrolik",
         },
         {
           "@type": "ListItem",
           position: 3,
           name: "Filtreler ve Bakım Ürünleri",
-          url: "https://argesmakine.com/categories/filtreler",
+          url: "https://argesismakinalari.com/categories/filtreler",
         },
       ],
     },

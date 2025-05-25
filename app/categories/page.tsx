@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "İş Makineleri Yedek Parça Kategorileri | Arges Makine",
     description:
       "Tüm iş makinesi yedek parça kategorilerimizi inceleyin. En kaliteli parçalar Arges Makine güvencesiyle.",
-    url: "https://argesmakine.com/categories",
+    url: "https://argesismakinalari.com/categories",
     type: "website",
   },
 };
@@ -36,10 +36,10 @@ export default async function CategoriesPage() {
         "@type": "Product",
         name: category.name,
         description: category.description,
-        url: `https://argesmakine.com/products?category=${encodeURIComponent(
+        url: `https://argesismakinalari.com/products?category=${encodeURIComponent(
           category.name
         )}`,
-        image: `https://argesmakine.com${category.imageUrl}`,
+        image: `https://argesismakinalari.com${category.imageUrl}`,
       },
     })),
   };

@@ -13,11 +13,11 @@ export const metadata: Metadata = {
     title: "İş Makinesi Yedek Parça Ürünlerimiz | Arges Makine",
     description:
       "En kaliteli iş makinesi yedek parçaları Arges Makine'de. Caterpillar, Volvo, JCB, Komatsu ve diğer tüm markalar için orijinal kalitede parçaları keşfedin. Hidrolik pompalar, filtreler, motor parçaları ve daha fazlası.",
-    url: "https://argesmakine.com/products",
+    url: "https://argesismakinalari.com/products",
     type: "website",
     images: [
       {
-        url: "https://argesmakine.com/og-image.jpg",
+        url: "https://argesismakinalari.com/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Arges Makine - İş Makinesi Yedek Parça Ürünleri",

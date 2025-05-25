@@ -18,37 +18,37 @@ export async function GET() {
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://argesmakine.com/</loc>
+    <loc>https://argesismakinalari.com/</loc>
     <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://argesmakine.com/products</loc>
+    <loc>https://argesismakinalari.com/products</loc>
     <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://argesmakine.com/categories</loc>
+    <loc>https://argesismakinalari.com/categories</loc>
     <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://argesmakine.com/brands</loc>
+    <loc>https://argesismakinalari.com/brands</loc>
     <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://argesmakine.com/about</loc>
+    <loc>https://argesismakinalari.com/about</loc>
     <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://argesmakine.com/contact</loc>
+    <loc>https://argesismakinalari.com/contact</loc>
     <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -59,7 +59,7 @@ export async function GET() {
       products.forEach((product: Product) => {
         xml += `
   <url>
-    <loc>https://argesmakine.com/products/${product.id}</loc>
+    <loc>https://argesismakinalari.com/products/${product.id}</loc>
     <lastmod>${
       new Date(product.updatedAt || product.createdAt || new Date())
         .toISOString()
@@ -76,7 +76,7 @@ export async function GET() {
       categories.forEach((category: Category) => {
         xml += `
   <url>
-    <loc>https://argesmakine.com/products?category=${encodeURIComponent(
+    <loc>https://argesismakinalari.com/products?category=${encodeURIComponent(
       category.name
     )}</loc>
     <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
@@ -91,7 +91,7 @@ export async function GET() {
       brands.forEach((brand: Brand) => {
         xml += `
   <url>
-    <loc>https://argesmakine.com/products?brand=${encodeURIComponent(
+    <loc>https://argesismakinalari.com/products?brand=${encodeURIComponent(
       brand.name
     )}</loc>
     <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>

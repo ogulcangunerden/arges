@@ -7,4 +7,4 @@ Allow: /brands/
 # Ürün sayfalarına öncelik verildi
 Crawl-delay: 1
 
-Sitemap: https://argesmakine.com/sitemap.xml 
+Sitemap: https://argesismakinalari.com/sitemap.xml 
