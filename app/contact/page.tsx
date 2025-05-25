@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "İletişim | Arges Makine",
+  title: "İletişim | Arges Makina",
   description: "Arges Makine - Bize ulaşın, sorularınızı yanıtlayalım",
 };
 

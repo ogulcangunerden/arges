@@ -9,7 +9,7 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Arges Makine | İş Makineleri Yedek Parça",
+  title: "Arges Makina | İş Makinaları Yedek Parça",
   description:
     "Arges Makine - İş makineleri için en kaliteli yedek parçalar, hidrolik pompa, filtreler, caterpillar, volvo, JCB yedek parçaları ve tüm iş makinesi parçaları için güvenilir tedarikçiniz.",
   keywords:
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Arges Makine | İş Makineleri Yedek Parça",
     description:
-      "En kaliteli iş makineleri yedek parçaları için Arges Makine. Hidrolik pompa, filtreler ve tüm markalar için parçalar.",
+      "En kaliteli iş makinaları yedek parçaları için Arges Makina. Hidrolik pompa, filtreler ve tüm markalar için parçalar.",
     url: "https://argesmakine.com",
     siteName: "Arges Makine",
     locale: "tr_TR",
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Arges Makine | İş Makineleri Yedek Parça",
     description:
-      "En kaliteli iş makineleri yedek parçaları için Arges Makine. Hidrolik pompalar, filtreler ve daha fazlası.",
+      "En kaliteli iş makinaları yedek parçaları için Arges Makina. Hidrolik pompalar, filtreler ve daha fazlası.",
     images: ["/logo.svg"],
   },
 };

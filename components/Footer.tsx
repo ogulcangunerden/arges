@@ -51,7 +51,7 @@ export function Footer() {
               />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Arges, iş makineleri için yüksek kaliteli yedek parça tedariğinde
+              Arges, iş makinaları için yüksek kaliteli yedek parça tedariğinde
               sektörün lider kuruluşudur.
             </p>
           </div>
@@ -189,7 +189,7 @@ export function Footer() {
 
         <div className="border-t border-border mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-xs text-muted-foreground">
-            &copy; {year} Arges Makine. Tüm hakları saklıdır.
+            &copy; {year} Arges İş Makinaları Yedek Parça. Tüm hakları saklıdır.
           </p>
         </div>
       </div>

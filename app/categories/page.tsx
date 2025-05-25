@@ -5,9 +5,9 @@ import { getCategories } from "@/lib/firebase/categories";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "İş Makineleri Yedek Parça Kategorileri | Arges Makine",
+  title: "İş Makinaları Yedek Parça Kategorileri | Arges Makina",
   description:
-    "Hidrolik pompalar, filtreler, motor parçaları ve daha fazlası. Tüm iş makineleri yedek parça kategorilerimizi keşfedin.",
+    "Hidrolik pompalar, filtreler, motor parçaları ve daha fazlası. Tüm iş makinaları yedek parça kategorilerimizi keşfedin.",
   keywords:
     "iş makinesi kategoriler, hidrolik parçalar, filtreleme sistemleri, motor parçaları, şanzıman parçaları",
   alternates: {
@@ -57,7 +57,7 @@ export default async function CategoriesPage() {
           Ürün Kategorilerimiz
         </h1>
         <p className="text-muted-foreground max-w-3xl">
-          Tüm marka ve model iş makineleri için yüksek kaliteli yedek parçalar
+          Tüm marka ve model iş makinaları için yüksek kaliteli yedek parçalar
           sunuyoruz. Geniş ürün yelpazemiz ile her ihtiyaca çözüm üretiyoruz.
         </p>
       </div>

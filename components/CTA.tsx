@@ -11,7 +11,7 @@ export function CTA() {
               İşinizi Sorunsuz Sürdürmeniz İçin Yanınızdayız
             </h2>
             <p className="text-muted-foreground md:text-lg">
-              İş makinelerinizin ihtiyacı olan yedek parçalar için teklif almak
+              İş makinalarınızın ihtiyacı olan yedek parçalar için teklif almak
               ve daha detaylı bilgi edinmek için hemen bizimle iletişime geçin.
             </p>
           </div>

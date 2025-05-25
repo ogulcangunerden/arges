@@ -19,12 +19,12 @@ export function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-6">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
-              İş Makineleri İçin{" "}
+              İş Makinaları İçin{" "}
               <span className="text-primary">Premium Yedek Parça</span>{" "}
               Çözümleri
             </h1>
             <p className="text-muted-foreground text-lg md:text-xl max-w-md">
-              Arges Makine olarak 20 yılı aşkın tecrübemizle iş makineleri için
+              Arges Makina olarak 20 yılı aşkın tecrübemizle iş makinaları için
               en kaliteli yedek parçaları sunuyoruz.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -129,7 +129,7 @@ export function Hero() {
               <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
                 <Image
                   src="/images/arges1.png"
-                  alt="İş makinesi yedek parçaları"
+                  alt="İş makinası yedek parçaları"
                   width={600}
                   height={600}
                   className="w-full"

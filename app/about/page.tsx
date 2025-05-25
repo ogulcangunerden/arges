@@ -6,7 +6,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Hakkımızda | Arges Makine",
   description:
-    "Arges Makine - İş makineleri için yedek parça tedarikinde sektörün lider kuruluşu",
+    "Arges Makina - İş makinaları için yedek parça tedarikinde sektörün lider kuruluşu",
 };
 
 export default function AboutPage() {
@@ -50,7 +50,7 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold tracking-tight">Hikayemiz</h2>
               <div className="space-y-4 text-zinc-600">
                 <p>
-                  Arges Makine, 2011 yılında iş makineleri için yedek parça
+                  Arges Makine, 2011 yılında iş makinaları için yedek parça
                   tedarik etmek amacıyla kurulmuştur. Şirketimiz, kalite, uygun
                   fiyat, satış öncesi ve sonrası teknik destek, zamanında teslim
                   ve müşteri memnuniyetini ilke edinmiştir.
@@ -136,7 +136,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold mb-4">Vizyonumuz</h3>
               <p className="text-zinc-600">
-                Türkiye&apos;de ve bölge ülkelerinde iş makineleri yedek parça
+                Türkiye&apos;de ve bölge ülkelerinde iş makinaları yedek parça
                 sektöründe lider konuma gelmek, alanında uzman kadromuzla ürün
                 kalitesini koruyarak ve geliştirerek sektörde güvenilir bir
                 marka olmak.

@@ -88,7 +88,7 @@ export default function ProductsPage() {
       {
         "@type": "ListItem",
         position: 1,
-        name: "İş Makinesi Yedek Parçaları",
+        name: "İş Makinası Yedek Parçaları",
         url: "https://argesmakine.com/products",
       },
     ],

@@ -11,7 +11,7 @@ export default function Home() {
   const homeJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Arges Makine - İş Makineleri Yedek Parça",
+    name: "Arges Makina - İş Makinaları Yedek Parça",
     description:
       "İş makineleri için en kaliteli yedek parçalar, hidrolik pompa, filtreler ve tüm parçalar uygun fiyatlarla.",
     url: "https://argesmakine.com",

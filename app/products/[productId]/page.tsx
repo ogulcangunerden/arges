@@ -18,14 +18,14 @@ export async function generateMetadata({
 
     if (!product) {
       return {
-        title: "Ürün Bulunamadı | Arges Makine",
+        title: "Ürün Bulunamadı | Arges Makina",
       };
     }
 
     // Improved title with part number if available
     const pageTitle = product.degisenNo
-      ? `${product.name} (${product.degisenNo}) | İş Makinesi Yedek Parça | Arges Makine`
-      : `${product.name} | İş Makinesi Yedek Parça | Arges Makine`;
+      ? `${product.name} (${product.degisenNo}) | İş Makinası Yedek Parça | Arges Makina`
+      : `${product.name} | İş Makinası Yedek Parça | Arges Makina`;
 
     // Enhanced description with more detailed information
     const pageDescription = product.description

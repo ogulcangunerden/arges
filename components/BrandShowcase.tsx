@@ -25,7 +25,7 @@ export async function BrandShowcase() {
             Temsil Ettiğimiz Markalar
           </h2>
           <p className="text-muted-foreground max-w-2xl">
-            Dünya&apos;nın önde gelen iş makinesi ve motor üreticilerinin
+            Dünya&apos;nın önde gelen iş makinası ve motor üreticilerinin
             orijinal ve eşdeğer yedek parçalarını temin ediyoruz.
           </p>
         </div>

@@ -24,12 +24,12 @@ export function AboutSection() {
           <div className="space-y-6">
             <div>
               <h2 className="text-3xl font-bold tracking-tight mb-4">
-                İş Makineleri Yedek Parçaları&apos;nda{" "}
+                İş Makinaları Yedek Parçaları&apos;nda{" "}
                 <span className="text-primary">Güvenilir Çözüm Ortağınız</span>
               </h2>
               <p className="text-muted-foreground mb-6">
-                Arges Makine olarak, 20 yılı aşkın sektör tecrübemizle iş
-                makineleri için yedek parça tedariğinde sektörün lider
+                Arges Makina olarak, 20 yılı aşkın sektör tecrübemizle iş
+                makinaları için yedek parça tedariğinde sektörün lider
                 kuruluşları arasında yer alıyoruz. Müşteri memnuniyetini her
                 zaman ön planda tutarak, kaliteli ürünleri rekabetçi fiyatlarla
                 sunmaya devam ediyoruz.

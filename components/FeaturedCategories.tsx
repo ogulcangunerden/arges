@@ -25,7 +25,7 @@ export async function FeaturedCategories() {
             Ürün Kategorilerimiz
           </h2>
           <p className="text-muted-foreground max-w-2xl">
-            Tüm marka ve model iş makineleri için yüksek kaliteli yedek parçalar
+            Tüm marka ve model iş makinaları için yüksek kaliteli yedek parçalar
             sunuyoruz. Geniş ürün yelpazemiz ile her ihtiyaca çözüm üretiyoruz.
           </p>
         </div>

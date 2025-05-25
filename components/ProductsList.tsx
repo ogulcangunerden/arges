@@ -289,12 +289,12 @@ function ProductCard({ product }: { product: Product }) {
     product.degisenNo ? ` - ${product.degisenNo}` : ""
   } - ${product.brand || ""} ${
     product.category || ""
-  } yedek parça - Arges Makine`;
+  } yedek parça - Arges Makina`;
 
   // Create a title attribute that includes product name and part number
   const titleText = `${product.name}${
     product.degisenNo ? ` (${product.degisenNo})` : ""
-  } - ${product.category || "Yedek Parça"} - Arges Makine`;
+  } - ${product.category || "Yedek Parça"} - Arges Makina`;
 
   return (
     <div
@@ -399,7 +399,7 @@ function ProductCard({ product }: { product: Product }) {
               itemScope
               itemType="https://schema.org/Organization"
             >
-              <meta itemProp="name" content="Arges Makine" />
+              <meta itemProp="name" content="Arges Makina" />
             </span>
           </span>
         </div>

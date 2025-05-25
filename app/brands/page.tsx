@@ -5,7 +5,7 @@ import { getBrands } from "@/lib/firebase/brands";
 import { Brand } from "@/types/brand";
 
 export const metadata: Metadata = {
-  title: "Tüm Markalar | Arges Makine",
+  title: "Tüm Markalar | Arges Makina",
   description: "Arges Makine - İş makineleri yedek parça markaları",
 };
 
