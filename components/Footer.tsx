@@ -191,6 +191,15 @@ export function Footer() {
           <p className="text-xs text-muted-foreground">
             &copy; {year} Arges İş Makinaları Yedek Parça. Tüm hakları saklıdır.
           </p>
+          <span className="text-sm">
+            Made with ❤️ by{" "}
+            <Link
+              href="https://oemstudio.com"
+              className="text-foreground/70 hover:text-foreground transition-colors"
+            >
+              OEM Studio
+            </Link>
+          </span>
         </div>
       </div>
     </footer>
