@@ -32,14 +32,65 @@ function ProductsContent() {
     setSelectedBrand(decodedBrand);
   }, [decodedCategory, decodedBrand]);
 
+  // Dynamic page title and meta updates based on filters
+  useEffect(() => {
+    let title = "İş Makinesi Yedek Parça Ürünlerimiz | Arges Makina";
+    let description =
+      "Caterpillar, Volvo, JCB, Komatsu ve diğer tüm marka iş makinaları için kaliteli yedek parçalar. Hidrolik sistemler, pompa, motor parçaları, filtreler ve geniş ürün yelpazemizle hizmetinizdeyiz.";
+
+    if (decodedCategory && decodedBrand) {
+      title = `${decodedBrand} ${decodedCategory} Yedek Parçaları | Arges Makina`;
+      description = `${decodedBrand} marka ${decodedCategory} için en kaliteli yedek parçalar. Orijinal kalitede ${decodedBrand} ${decodedCategory} parçaları uygun fiyatlarla Arges Makina'da. Hızlı teslimat ve garanti ile.`;
+    } else if (decodedCategory) {
+      title = `${decodedCategory} Yedek Parçaları | İş Makinesi Parçaları | Arges Makina`;
+      description = `${decodedCategory} için en kaliteli yedek parçalar. Tüm markalar için orijinal kalitede ${decodedCategory} parçaları uygun fiyatlarla. Profesyonel hizmet ve garanti ile Arges Makina'da.`;
+    } else if (decodedBrand) {
+      title = `${decodedBrand} Yedek Parçaları | ${decodedBrand} İş Makinesi Parçaları | Arges Makina`;
+      description = `${decodedBrand} marka iş makinaları için en kaliteli yedek parçalar. Orijinal ${decodedBrand} parçaları, hidrolik sistemler, filtreler ve tüm yedek parçalar uygun fiyatlarla Arges Makina'da.`;
+    }
+
+    // Update document title and meta description dynamically
+    document.title = title;
+
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", description);
+    }
+
+    // Update Open Graph tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute("content", title);
+    }
+
+    const ogDescription = document.querySelector(
+      'meta[property="og:description"]'
+    );
+    if (ogDescription) {
+      ogDescription.setAttribute("content", description);
+    }
+  }, [decodedCategory, decodedBrand]);
+
   return (
     <>
       <div className="mb-10 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">Ürünlerimiz</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+            {decodedCategory && decodedBrand
+              ? `${decodedBrand} ${decodedCategory} Ürünleri`
+              : decodedCategory
+              ? `${decodedCategory} Ürünleri`
+              : decodedBrand
+              ? `${decodedBrand} Ürünleri`
+              : "Ürünlerimiz"}
+          </h1>
           <p className="text-muted-foreground text-lg">
-            Geniş ürün yelpazemizi keşfedin ve ihtiyacınıza uygun çözümleri
-            bulun.
+            {decodedCategory || decodedBrand
+              ? `${decodedBrand || ""} ${
+                  decodedCategory || ""
+                } için kaliteli yedek parça seçeneklerimizi keşfedin.`.trim()
+              : "Geniş ürün yelpazemizi keşfedin ve ihtiyacınıza uygun çözümleri bulun."}
           </p>
         </div>
         <div className="hidden md:flex flex-col items-center">

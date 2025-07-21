@@ -3,8 +3,33 @@ Allow: /
 Allow: /products/
 Allow: /categories/
 Allow: /brands/
+Allow: /about/
+Allow: /contact/
 
-# Ürün sayfalarına öncelik verildi
+# Öncelik sırası - ürün sayfaları en önemli
 Crawl-delay: 1
 
-Sitemap: https://argesismakinalari.com/sitemap.xml 
+# Google Bot için özel ayarlar
+User-agent: Googlebot
+Crawl-delay: 0
+Allow: /products/
+Allow: /api/sitemap
+
+# Bing Bot için özel ayarlar  
+User-agent: Bingbot
+Crawl-delay: 1
+Allow: /products/
+
+# Yandex Bot için özel ayarlar
+User-agent: YandexBot
+Crawl-delay: 1
+Allow: /products/
+
+# İzin verilmeyen alanlar
+Disallow: /admin/
+Disallow: /api/auth/
+Disallow: /_next/
+Disallow: /api/admin/
+
+Sitemap: https://argesismakinalari.com/sitemap.xml
+Sitemap: https://argesismakinalari.com/api/sitemap 

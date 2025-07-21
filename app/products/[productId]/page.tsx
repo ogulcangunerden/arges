@@ -2,9 +2,25 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProductById } from "@/lib/firebase/products";
+import { getProductById, getProducts } from "@/lib/firebase/products";
 import { FirebaseError } from "firebase/app";
 import Script from "next/script";
+
+// Generate static params for all products - CRITICAL for SEO
+export async function generateStaticParams() {
+  try {
+    // Fetch up to 1000 products for static generation
+    const result = await getProducts(1000);
+
+    return result.products.map((product) => ({
+      productId: product.id,
+    }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    // Return empty array if there's an error, fallback to ISR
+    return [];
+  }
+}
 
 // Generate metadata for the page
 export async function generateMetadata({
@@ -19,70 +35,133 @@ export async function generateMetadata({
     if (!product) {
       return {
         title: "Ürün Bulunamadı | Arges Makina",
+        description:
+          "Aradığınız ürün bulunamadı. Tüm ürünlerimizi görmek için ürünler sayfasını ziyaret edin.",
+        robots: {
+          index: false,
+          follow: false,
+        },
       };
     }
 
-    // Improved title with part number if available
+    // Enhanced SEO-optimized title with part number
     const pageTitle = product.degisenNo
-      ? `${product.name} (${product.degisenNo}) | İş Makinası Yedek Parça | Arges Makina`
-      : `${product.name} | İş Makinası Yedek Parça | Arges Makina`;
+      ? `${product.name} ${product.degisenNo} | ${
+          product.brand || ""
+        } Yedek Parça | Arges Makina`
+      : `${product.name} | ${product.brand || ""} ${
+          product.category || "Yedek Parça"
+        } | Arges Makina`;
 
-    // Enhanced description with more detailed information
+    // Enhanced description with local SEO and specific details
     const pageDescription = product.description
       ? `${product.name}${
-          product.degisenNo ? ` (${product.degisenNo})` : ""
+          product.degisenNo ? ` (Parça No: ${product.degisenNo})` : ""
         } - ${product.description}. ${
           product.brand ? product.brand + " marka" : ""
         } ${
           product.category
-        } için orijinal kalitede yedek parça Arges Makine'de.`
+        } için orijinal kalitede yedek parça. ✅ Hızlı teslimat ✅ Garanti ✅ Uygun fiyat. Arges Makina güvencesiyle.`
       : `${product.name}${
-          product.degisenNo ? ` (${product.degisenNo})` : ""
+          product.degisenNo ? ` (Parça No: ${product.degisenNo})` : ""
         } - ${product.brand ? product.brand + " marka" : ""} ${
-          product.category
-        } için en uygun fiyatlarla. İş makineniz için kaliteli yedek parçalar Arges Makine güvencesiyle.`;
+          product.category || "iş makinesi"
+        } için kaliteli yedek parça. Türkiye'nin güvenilir iş makinesi parça tedarikçisi Arges Makina'dan.`;
 
-    // Enhanced keywords with part number
+    // Enhanced keywords for better search visibility
     const keywordsList = [
       product.name,
       product.degisenNo,
       `${product.name} yedek parça`,
+      `${product.name} parça`,
       product.degisenNo ? `${product.degisenNo} yedek parça` : "",
+      product.degisenNo ? `${product.degisenNo} parça` : "",
       product.category,
+      `${product.category} yedek parça`,
       product.brand || "",
+      product.brand ? `${product.brand} yedek parça` : "",
+      product.brand ? `${product.brand} parça` : "",
       "iş makinesi yedek parça",
+      "iş makinesi parça",
       "hidrolik pompa",
       "yedek parça",
-      product.brand ? `${product.brand} yedek parça` : "",
+      "arges makina",
+      "türkiye yedek parça",
+      "orijinal yedek parça",
+      "kaliteli yedek parça",
     ]
       .filter(Boolean)
       .join(", ");
+
+    // Enhanced image URL for better social sharing
+    const imageUrl =
+      product.imageUrl && product.imageUrl !== "/logo.svg"
+        ? product.imageUrl
+        : "https://argesismakinalari.com/og-product-default.jpg";
 
     return {
       title: pageTitle,
       description: pageDescription,
       keywords: keywordsList,
+      authors: [
+        {
+          name: "Arges Makina",
+          url: "https://argesismakinalari.com",
+        },
+      ],
+      creator: "Arges Makina",
+      publisher: "Arges Makina",
       alternates: {
         canonical: `/products/${productId}`,
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+        },
       },
       openGraph: {
         title: pageTitle,
         description: pageDescription,
         url: `https://argesismakinalari.com/products/${productId}`,
         type: "website",
+        siteName: "Arges Makina",
+        locale: "tr_TR",
         images: [
           {
-            url: product.imageUrl || "/logo.svg",
-            width: 800,
-            height: 600,
-            alt: product.name,
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: `${product.name}${
+              product.degisenNo ? ` (${product.degisenNo})` : ""
+            } - Arges Makina`,
+            type: "image/jpeg",
           },
         ],
       },
+      twitter: {
+        card: "summary_large_image",
+        title: pageTitle,
+        description: pageDescription,
+        images: [imageUrl],
+        creator: "@argesmakina",
+        site: "@argesmakina",
+      },
     };
-  } catch {
+  } catch (error) {
+    console.error("Error generating metadata:", error);
     return {
-      title: "Ürün Yüklenemedi | Arges Makine",
+      title: "Ürün Yüklenemedi | Arges Makina",
+      description:
+        "Ürün bilgileri yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 }
@@ -104,37 +183,125 @@ export default async function ProductDetailPage({
     const productJsonLd = {
       "@context": "https://schema.org/",
       "@type": "Product",
+      "@id": `https://argesismakinalari.com/products/${productId}#product`,
       name: product.degisenNo
-        ? `${product.name} (${product.degisenNo})`
+        ? `${product.name} ${product.degisenNo}`
         : product.name,
-      description: product.description,
-      image: product.imageUrl || "https://argesismakinalari.com/logo.svg",
-      category: product.category,
+      alternateName: product.degisenNo ? product.degisenNo : undefined,
+      description:
+        product.description ||
+        `${product.name} - ${product.brand || ""} ${
+          product.category || "yedek parça"
+        } için kaliteli parça`,
+      image: [
+        product.imageUrl && product.imageUrl !== "/logo.svg"
+          ? product.imageUrl
+          : "https://argesismakinalari.com/og-product-default.jpg",
+      ],
+      category: {
+        "@type": "CategoryCode",
+        inCodeSet: {
+          "@type": "CategoryCodeSet",
+          name: "İş Makinesi Kategorileri",
+        },
+        codeValue: product.category,
+        name: product.category,
+      },
       brand: {
         "@type": "Brand",
         name: product.brand || "Arges Makine",
+        "@id": product.brand
+          ? `https://argesismakinalari.com/brands/${product.brand}#brand`
+          : undefined,
       },
       manufacturer: {
         "@type": "Organization",
         name: "Arges Makine",
+        "@id": "https://argesismakinalari.com/#organization",
+        url: "https://argesismakinalari.com",
       },
       sku: product.degisenNo || productId,
       mpn: product.degisenNo,
+      gtin: product.degisenNo, // Using part number as GTIN when available
+      productID: productId,
       identifier: [
         {
           "@type": "PropertyValue",
           propertyID: "degisenNo",
+          name: "Değişen Numarası",
           value: product.degisenNo,
         },
+        {
+          "@type": "PropertyValue",
+          propertyID: "productId",
+          name: "Ürün ID",
+          value: productId,
+        },
       ],
+      additionalProperty: product.features
+        ? product.features.map((feature, index) => ({
+            "@type": "PropertyValue",
+            name: `Özellik ${index + 1}`,
+            value: feature,
+          }))
+        : [],
+      isRelatedTo: {
+        "@type": "ProductGroup",
+        name: product.category,
+        url: `https://argesismakinalari.com/products?category=${encodeURIComponent(
+          product.category || ""
+        )}`,
+      },
+      inProductGroupWithID: product.category,
+      audience: {
+        "@type": "Audience",
+        audienceType: "İş Makinesi Sahipleri",
+        geographicArea: {
+          "@type": "Country",
+          name: "Turkey",
+        },
+      },
       offers: {
         "@type": "Offer",
+        "@id": `https://argesismakinalari.com/products/${productId}#offer`,
+        url: `https://argesismakinalari.com/products/${productId}`,
         availability: "https://schema.org/InStock",
+        itemCondition: "https://schema.org/NewCondition",
+        category: product.category,
+        eligibleRegion: {
+          "@type": "Country",
+          name: "Turkey",
+        },
         seller: {
           "@type": "Organization",
           name: "Arges Makine",
+          "@id": "https://argesismakinalari.com/#organization",
           url: "https://argesismakinalari.com",
         },
+        businessFunction: "https://schema.org/Sell",
+        warranty: {
+          "@type": "WarrantyPromise",
+          durationOfWarranty: {
+            "@type": "QuantitativeValue",
+            value: 12,
+            unitCode: "MON",
+          },
+        },
+      },
+      keywords: [
+        product.name,
+        product.degisenNo,
+        product.brand,
+        product.category,
+        "yedek parça",
+        "iş makinesi",
+        "arges makine",
+      ]
+        .filter(Boolean)
+        .join(", "),
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": `https://argesismakinalari.com/products/${productId}`,
       },
     };
 
@@ -258,13 +425,33 @@ export default async function ProductDetailPage({
                   <>
                     {product.name}{" "}
                     <span className="text-[#febd00]">
-                      ({product.degisenNo})
+                      (Parça No: {product.degisenNo})
                     </span>
+                    {product.brand && (
+                      <span className="text-gray-600 text-xl font-medium ml-2">
+                        - {product.brand} Yedek Parça
+                      </span>
+                    )}
                   </>
                 ) : (
-                  product.name
+                  <>
+                    {product.name}
+                    {product.brand && (
+                      <span className="text-gray-600 text-xl font-medium ml-2">
+                        - {product.brand} {product.category || "Yedek Parça"}
+                      </span>
+                    )}
+                  </>
                 )}
               </h1>
+
+              {/* SEO-friendly subtitle */}
+              <p className="text-lg text-gray-600 mt-2">
+                {product.brand && `${product.brand} marka `}
+                {product.category || "iş makinesi"} için orijinal kalitede yedek
+                parça
+                {product.degisenNo && ` | Parça Kodu: ${product.degisenNo}`}
+              </p>
             </div>
 
             <div className="bg-gray-50 p-4 rounded-lg">
